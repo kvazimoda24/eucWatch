@@ -818,13 +818,14 @@
 	{ "id": "eucInmotionV11",
 		"name": "Inmotion V11 module, V1.4 and later",
 		"icon": "../../v2/euc/eucInmotionV11/icon.png",
-		"version":"1.94.8",
+		"version":"1.94.7",
 		"description": "EUC module for Inmotion V11 (fimware version > 1.4).",
 		"tags": "euc",
 		"type": "euc",
 	    "needsFeatures":["EW"],
 		"storage": [
-			{"name":"eucInmotionV11","url":"../../v2/euc/eucInmotionV11/eucInmotionV11.js"}
+			{"name":"eucInmotionV11","url":"../../v2/euc/eucInmotionV11/eucInmotionV11.js"},
+			{"name":"proxyInmotionV11","url":"../../v2/euc/eucInmotionV11/proxyInmotionV11.js"}
 		]
 	},
 	{ "id": "eucInmotionV11-old",
