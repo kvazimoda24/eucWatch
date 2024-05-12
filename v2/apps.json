@@ -421,6 +421,18 @@
 		{"name":"dashInmotionV12","url":"../../P8-testing/dashInmotionV12/dashInmotionV12.js"}
     ]
 	},
+	{ "id": "dashInmotionV2",
+		"name": "Inmotion V2 Settings (TEST)",
+		"icon": "../../P8-testing/dashInmotionV2/icon.png",
+		"version":"0.1",
+		"description": "EUC dashboard, Inmotion V11/12/13 settings gui files.",
+		"tags": "euc",
+	    "needsFeatures":["V1"],
+		"readme": "README.md",
+		"storage": [
+			{"name":"dashInmotionV2","url":"../../P8-testing/dashInmotionV2/dashInmotionV2.js"}
+    ]
+	},
 	{ "id": "dashVeteran",
 		"name": "Veteran Settings",
 		"icon": "../../P8-testing/dashVeteran/icon.png",
