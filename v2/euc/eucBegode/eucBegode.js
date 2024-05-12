@@ -338,7 +338,7 @@ euc.conn=function(mac){
 				euc.tout.eucWrite=0;
 			}
 			if (euc.tout.busy) {
-				if (cmd!=="proxy") euc.tout.eucWrite=setTimeout(function() {euc.wri(cmd,value)},100);
+				if (cmd!=="proxy") euc.tout.eucWrite=setTimeout(function() {euc.wri(n,v)},100);
 				return;
 			}
 			//end
