@@ -275,6 +275,7 @@ touchHandler[0]=function(e,x,y){
 					require("Storage").write("devmode","shutdown");
 					ew.def.acc=0;
 					ew.do.update.acc();
+					acc.off();
 					face.go("clock",-1);
 					setTimeout(()=>{E.reboot();},500);
 				}else {
