@@ -50,6 +50,18 @@ if ((BTN1.read() || require("Storage").read("devmode")) && process.env.BOARD != 
     digitalPulse(ew.pin.BUZZ, ew.pin.BUZ0, 300);
     E.enableWatchdog(process.env.BOARD == "DSD6"?2:600, true);
     clearInterval(wdint);
+    pinMode(ew.pin.BAT, "input");
+    pinMode(ew.pin.CHRG, "input");
+    pinMode(ew.pin.BL, "output"); digitalWrite(ew.pin.BL, 1);
+    pinMode(ew.pin.i2c.SCL, "output"); digitalWrite(ew.pin.i2c.SCL, 1);
+    pinMode(ew.pin.i2c.SDA, "output"); digitalWrite(ew.pin.i2c.SDA, 1);
+    pinMode(ew.pin.touch.RST, "output"); digitalWrite(ew.pin.touch.RST, 0);
+    pinMode(ew.pin.touch.INT, "input");
+    pinMode(ew.pin.disp.CS, "output"); digitalWrite(ew.pin.disp.CS, 1);
+    pinMode(ew.pin.disp.DC, "output"); digitalWrite(ew.pin.disp.DC, 1);
+    pinMode(ew.pin.disp.RST, "output"); digitalWrite(ew.pin.disp.RST, 1);
+    pinMode(ew.pin.disp.BL, "output"); digitalWrite(ew.pin.disp.BL, 1);
+    pinMode(ew.pin.acc.INT, "input");
     //wdint = setInterval(KickWd, process.env.BOARD == "DSD6"?1000:300000);
     NRF.sleep();
   }
