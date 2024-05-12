@@ -59,7 +59,7 @@
 	{ "id": "init",
 		"name": "Init - P22 B1-D",
 		"icon": "../init/icon.png",
-		"version":"1.94.7",
+		"version":"1.94.8",
 		"description": "Screen driver and init functions. For use with the Espruino image  build by fanoush. ",
 		"tags": "core",
 	    "needsFeatures":["P22B"],
