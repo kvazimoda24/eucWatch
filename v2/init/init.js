@@ -48,6 +48,8 @@ if ((BTN1.read() || require("Storage").read("devmode")) && process.env.BOARD != 
   }
   else if (mode == "shutdown") {
     digitalPulse(ew.pin.BUZZ, ew.pin.BUZ0, 300);
+    digitalPulse("D13",1,[5,50]);i2c.writeTo(0x15,0xE5,0x03); // Touch off
+    i2c.writeTo(0x18,0x20,0x08); // ACC low-power
     NRF.sleep();
   }
   else {
