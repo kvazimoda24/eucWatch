@@ -257,25 +257,18 @@ euc.temp.pck4=function(data) {
 
 euc.temp.init=function(c) {
 	let hlc=[0,"lightsOn","lightsOff","lightsStrobe"];
-	euc.tout.busy = 1;
-	c.writeValue(euc.cmd(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none")).then(function() {
-		return c.writeValue(euc.cmd(euc.dash.auto.onC.beep?"beep":"none"));
+	euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none").then(function() {
+		return euc.wri(euc.dash.auto.onC.beep?"beep":"none");
 	}).then(function() {
-		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none");
+		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
 	}).then(function() {
-		if (!euc.dash.info.get.modl){
+		if (!euc.dash.info.get.modl) {
 			console.log("model not found,fetch");
-			euc.tout.busy = 1;
-			c.writeValue(euc.cmd("fetchModel")).then(function() {
-				return euc.tout.busy = 0;
-			});
+			return euc.wri("fetchModel");
 		}
 	}).then(function() {
 		if (!euc.dash.info.get.firm) {
-			euc.tout.busy = 1;
-			c.writeValue(euc.cmd("fetchFirmware")).then(function() {
-				return euc.tout.busy = 0;
-			});
+			return euc.wri("fetchFirmware");
 		}
 	}).then(function() {
 		euc.is.run=1;
@@ -285,8 +278,8 @@ euc.temp.init=function(c) {
 euc.temp.exit=function(c) {
 	if (euc.gatt && euc.gatt.connected) {
 		let hld=["none","lightsOn","lightsOff","lightsStrobe"];
-		c.writeValue(euc.cmd(hld[euc.dash.auto.onD.HL])).then(function() {
-			return c.writeValue(euc.cmd(euc.dash.auto.onD.beep?"beep":"none"));
+		euc.wri(hld[euc.dash.auto.onD.HL]).then(function() {
+			return euc.wri(euc.dash.auto.onD.beep?"beep":"none");
 		}).then(function() {
 			return euc.wri(euc.dash.auto.onD.led?("ledMode",euc.dash.auto.onD.led-1):"none");
 		}).then(function() {
@@ -295,8 +288,8 @@ euc.temp.exit=function(c) {
 		}).then(function() {
 			euc.gatt.disconnect();
 		}).catch(euc.off);
-	}else {
-		if (euc.tout.busy) {clearTimeout(euc.tout.busy);euc.tout.busy=0;}
+	} else {
+		if (euc.tout.busy) {euc.tout.busy=0;}
 		euc.state="OFF";
 		euc.off("not connected");
 		return;
@@ -368,7 +361,10 @@ euc.conn=function(mac){
 				if (euc.is.run) {
 					c.startNotifications();
 					euc.tout.busy = 0;
-				} else euc.temp.init(c);
+				} else {
+					euc.tout.busy = 0;
+					euc.temp.init(c);
+				}
 				setTimeout(()=>{euc.state="READY";},500);
 			}else{
 				let cob=euc.cmd(n,v);
