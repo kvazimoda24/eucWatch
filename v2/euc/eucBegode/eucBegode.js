@@ -258,16 +258,23 @@ euc.temp.pck4=function(data) {
 
 euc.temp.init=function(c) {
 	let hlc=[0,"lightsOn","lightsOff","lightsStrobe"];
-	euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
-	euc.wri(euc.dash.auto.onC.beep?"beep":"none");
-	euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
-	if (!euc.dash.info.get.modl) {
-		console.log("model not found,fetch");
-		euc.wri("fetchModel");
-	}
-	if (!euc.dash.info.get.firm) euc.wri("fetchFirmware");
-	euc.is.run=1;
-	c.startNotifications();
+	new Promise(function() {
+		return euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
+	}).then(function() {
+		return euc.wri(euc.dash.auto.onC.beep?"beep":"none");
+	}).then(function() {
+		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
+	}).then(function() {
+		if (!euc.dash.info.get.modl) {
+			console.log("model not found,fetch");
+			return euc.wri("fetchModel");
+		}
+	}).then(function() {
+		if (!euc.dash.info.get.firm) return euc.wri("fetchFirmware");
+	}).then(function() {
+		euc.is.run=1;
+		return c.startNotifications();
+	}).catch(euc.off);
 };
 euc.temp.exit=function(c) {
 	if (euc.gatt && euc.gatt.connected) {
@@ -337,6 +344,7 @@ euc.conn=function(mac){
 				if (cmd!=="proxy") euc.tout.eucWrite=setTimeout(function() {euc.wri(n,v)},100);
 				return;
 			}
+			euc.tout.busy = 1;
 			//end
 			if (n==="proxy") {
 				c.writeValue(euc.proxy.buffer[0]).then(function() {
