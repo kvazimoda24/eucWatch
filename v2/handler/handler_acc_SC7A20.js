@@ -48,9 +48,10 @@ acc={
 			}else clearWatch(ew.tid.acc);
 			ew.tid.acc=0;
 		}
-		i2c.writeTo(0x18,0x20,0x07); //Clear LPen-Enable all axes-Power down
-		i2c.writeTo(0x18,0x26);
-		i2c.readFrom(0x18,1);// Read REFERENCE-Reset filter block 
+		//i2c.writeTo(0x18,0x20,0x07); //Clear LPen-Enable all axes-Power down
+		i2c.writeTo(0x18,0x20,0x08); //Low power
+		//i2c.writeTo(0x18,0x26);
+		//i2c.readFrom(0x18,1);// Read REFERENCE-Reset filter block 
 		return true;
 	},
 	init:function(v){
