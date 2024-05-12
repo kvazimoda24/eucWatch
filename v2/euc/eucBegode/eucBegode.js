@@ -1,12 +1,13 @@
 //Begode euc module - based on code from Freetyl3r's euc dash.
 E.setFlags({ pretokenise: 1 });
 euc.cmd=function(cmd, param) {
+  if (euc.dbg) console.log("euc.cmd(", cmd, ",", param, ")");
   if (cmd=='extendedPacket') {
-	  euc.temp.ext=1;
+	euc.temp.ext=1;
 	setTimeout(()=>{euc.temp.read.replaceWith(euc.temp.extd);},500);
-  }else if (euc.temp.ext){
+  } else if (euc.temp.ext) {
   	euc.temp.ext=0;
-	  euc.temp.read.replaceWith(euc.temp.main);
+	euc.temp.read.replaceWith(euc.temp.main);
   }
   switch(cmd) {
     case 'mainPacket':      return [44];
@@ -257,31 +258,22 @@ euc.temp.pck4=function(data) {
 
 euc.temp.init=function(c) {
 	let hlc=[0,"lightsOn","lightsOff","lightsStrobe"];
-	new Promise(function() {
-		return euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
-	}).then(function() {
-		return euc.wri(euc.dash.auto.onC.beep?"beep":"none");
-	}).then(function() {
-		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
-	}).then(function() {
-		if (!euc.dash.info.get.modl) {
-			console.log("model not found,fetch");
-			return euc.wri("fetchModel");
-		}
-	}).then(function() {
-		if (!euc.dash.info.get.firm) {
-			return euc.wri("fetchFirmware");
-		}
-	}).then(function() {
-		euc.is.run=1;
-		return c.startNotifications();
-	}).catch(euc.off);
+	euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
+	euc.wri(euc.dash.auto.onC.beep?"beep":"none");
+	euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
+	if (!euc.dash.info.get.modl) {
+		console.log("model not found,fetch");
+		euc.wri("fetchModel");
+	}
+	if (!euc.dash.info.get.firm) euc.wri("fetchFirmware");
+	euc.is.run=1;
+	c.startNotifications();
 };
 euc.temp.exit=function(c) {
 	if (euc.gatt && euc.gatt.connected) {
 		let hld=["none","lightsOn","lightsOff","lightsStrobe"];
 		new Promise(function() {
-			euc.wri(hld[euc.dash.auto.onD.HL]);
+			return euc.wri(hld[euc.dash.auto.onD.HL]);
 		}).then(function() {
 			return euc.wri(euc.dash.auto.onD.beep?"beep":"none");
 		}).then(function() {
