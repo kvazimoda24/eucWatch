@@ -257,7 +257,9 @@ euc.temp.pck4=function(data) {
 
 euc.temp.init=function(c) {
 	let hlc=[0,"lightsOn","lightsOff","lightsStrobe"];
-	euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none").then(function() {
+	new Promise(function() {
+		return euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
+	}).then(function() {
 		return euc.wri(euc.dash.auto.onC.beep?"beep":"none");
 	}).then(function() {
 		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
@@ -278,7 +280,9 @@ euc.temp.init=function(c) {
 euc.temp.exit=function(c) {
 	if (euc.gatt && euc.gatt.connected) {
 		let hld=["none","lightsOn","lightsOff","lightsStrobe"];
-		euc.wri(hld[euc.dash.auto.onD.HL]).then(function() {
+		new Promise(function() {
+			euc.wri(hld[euc.dash.auto.onD.HL]);
+		}).then(function() {
 			return euc.wri(euc.dash.auto.onD.beep?"beep":"none");
 		}).then(function() {
 			return euc.wri(euc.dash.auto.onD.led?("ledMode",euc.dash.auto.onD.led-1):"none");
