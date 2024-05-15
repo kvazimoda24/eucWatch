@@ -48,10 +48,6 @@ if ((BTN1.read() || require("Storage").read("devmode")) && process.env.BOARD != 
   }
   else if (mode == "shutdown") {
     digitalPulse(ew.pin.BUZZ, ew.pin.BUZ0, 300);
-    E.enableWatchdog(process.env.BOARD == "DSD6"?2:600, true);
-    clearInterval(wdint);
-    pinMode(ew.pin.disp.RST, "output"); digitalWrite(ew.pin.disp.RST, 1); // saving approximately 8 µA
-    //wdint = setInterval(KickWd, process.env.BOARD == "DSD6"?1000:300000);
     NRF.sleep();
   }
   else {

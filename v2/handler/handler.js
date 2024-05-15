@@ -21,10 +21,6 @@ var i2c = new I2C();
 i2c.setup({ scl: ew.pin.i2c.SCL, sda: ew.pin.i2c.SDA, bitrate: 100000 });
 //i2c.setup({scl:D7, sda:D6, bitrate:100000});
 
-// Disable Heart rate sensor
-i2c.writeTo(0x44,0x01,0x0);
-i2c.writeTo(0x44,0x0C,0x0);
-
 //find touch
 //if (process.env.BOARD == "P8" || process.env.BOARD == "P22") {
 if (process.env.BOARD == "P8" ||process.env.BOARD == "P22"||process.env.BOARD == "PINETIME"){
