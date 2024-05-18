@@ -2,7 +2,9 @@
 E.setFlags({ pretokenise: 1 });
 euc.cmd=function(no){
 	switch (no) {
-		case "beep":return [98];
+		case "beep":
+			if (euc.dash.info.get.modl<3000) return new Uint8Array([0x62]);
+			else return new Uint8Array([0x4C, 0x6B, 0x41, 0x70, 0x0E, 0x00, 0x80, 0x80, 0x80, 0x01, 0xCA, 0x87, 0xE6, 0x6F]);
 		case "rideSoft":return "SETs";
 		case "rideMed":return  "SETm";
 		case "rideStrong":return "SETh";
@@ -71,8 +73,11 @@ euc.temp.liveParse = function (inc){
   euc.dash.live.tmp=lala.getInt16(18)/100;
   euc.dash.alrt.tmp.cc=(euc.dash.alrt.tmp.hapt.hi - 5 <= euc.dash.live.tmp )? (euc.dash.alrt.tmp.hapt.hi <= euc.dash.live.tmp )?2:1:0;
   if (euc.dash.alrt.tmp.hapt.en && euc.dash.alrt.tmp.cc==2) euc.is.alert++;
+  // spd alert
   euc.dash.trip.avrS=(lala.getUint16(24) / 10);
+  // version
   if (!euc.dash.info.get.modl) euc.dash.info.get.modl=lala.getUint16(28);
+  // pedal mode
   euc.dash.opt.ride.mode=lala.getUint16(30);
   //pwm
   euc.dash.live.pwm=Math.round(lala.getUint16(34)/100);
@@ -101,6 +106,7 @@ euc.temp.inpk = function(event) {
   if (euc.is.busy) return;
   let inc=event.target.value.buffer;
   if (ew.is.bt==5) euc.proxy.w(inc);
+  if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran IN:",[].map.call(inc, x => x.toString(16)).toString());
 
   if ( inc.length>4 && inc[0]==0xDC && inc[1]==0x5A && inc[2]==0x5C ) euc.temp.tot=E.toUint8Array(inc);
   else if (euc.temp.tot.buffer.length>1) euc.temp.tot=E.toUint8Array(euc.temp.last,inc);
