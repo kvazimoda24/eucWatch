@@ -23,17 +23,20 @@ i2c.setup({ scl: ew.pin.i2c.SCL, sda: ew.pin.i2c.SDA, bitrate: 100000 });
 
 //find touch
 //if (process.env.BOARD == "P8" || process.env.BOARD == "P22") {
-if (process.env.BOARD == "P8" ||process.env.BOARD == "P22"||process.env.BOARD == "PINETIME"){
-
+if (process.env.BOARD == "P8" ||process.env.BOARD == "P22"||process.env.BOARD == "PINETIME") {
     if (ew.def.touchtype != "716" && ew.def.touchtype != "816" && ew.def.touchtype != "816s") eval(require('Storage').read("handler_touch"));
     else if (ew.def.touchtype == "816") eval(require('Storage').read("handler_touch_816"));
     else if (ew.def.touchtype == "816s") eval(require('Storage').read("handler_touch_816s"));
     else if (ew.def.touchtype == "716") eval(require('Storage').read("handler_touch_716"));
-}
-else {
-    eval(require('Storage').read('handler_touch'));
-}
+} else eval(require('Storage').read('handler_touch'));
 
+// Disabling hearth rate sensor
+i2c.writeTo(0x44,0x01);
+let hrs = i2c.readFrom(0x44,1)[0];
+i2c.writeTo(0x44,0x01,hrs&0x7F); // HEN reset
+i2c.writeTo(0x44,0x0C);
+hrs = i2c.readFrom(0x44,1)[0];
+i2c.writeTo(0x44,0x0C,hrs&0xDF); // PON reset
 
 if (process.env.BOARD == "P8" || process.env.BOARD == "P22") {
     if (ew.def.acctype != "SC7A20" && ew.def.acctype != "BMA421") {
@@ -42,13 +45,9 @@ if (process.env.BOARD == "P8" || process.env.BOARD == "P22") {
     }
     else if (ew.def.acctype === "BMA421") eval(require('Storage').read("handler_acc_BMA421"));
     else if (ew.def.acctype === "SC7A20") eval(require('Storage').read("handler_acc_SC7A20"));
-}
-else {
-    
-    
+} else {
     if (process.env.BOARD != "BANGLEJS2") eval(require('Storage').read('handler_acc_SC7A20'));
     else acc = { on: function() {}, off: function() {} };
-    
     themeD={
         btn:{onT:15,onB:4,offT:11,offB:2},
         menu:{onT:15,onB:4,offT:15,offB:2},
@@ -64,9 +63,17 @@ else {
         clock:{minF:0,minB:15,hrF:10,hrB:15,secF:10,secB:15,dateF:11,dateB:0,batF:11,batB:0,back:0,top:0}
     }; 
     theme=themeD;
-
 }
 //tasks
 if (require('Storage').read("handler_cron")) eval(require('Storage').read("handler_cron"));
 //theme
 //if (require('Storage').read("handlerTheme")) eval(require('Storage').read("handlerTheme"));
+//shutdown = function (v) {
+//    ew.do.update.settings();
+//    acc.off();
+//    face.go("clock",-1);
+//    digitalPulse(ew.pin.BUZZ, ew.pin.BUZ0, 300);
+//    setTimeout(()=>{
+//        poke32(0x40000500,1); // System Off
+//    }, 1000)
+//}
