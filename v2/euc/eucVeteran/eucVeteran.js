@@ -174,8 +174,8 @@ euc.conn=function(mac){
 				}).catch(euc.off);
 			}else if (n=="hornOn") {
 				euc.is.horn=1;
-				let md={"1":"SETs","2":"SETm","3":"SETh"};
-				c.writeValue(md[euc.dash.opt.ride.mode]).then(function() {
+				//let md={"1":"SETs","2":"SETm","3":"SETh"};
+				//c.writeValue(md[euc.dash.opt.ride.mode]).then(function() {
 					if (!euc.is.busy) {euc.is.busy=1;euc.is.horn=1;c.stopNotifications();}
 					setTimeout(() => {
 						c.writeValue((euc.dash.opt.lght.HL)?"SetLightOFF":"SetLightON").then(function() {
@@ -195,7 +195,7 @@ euc.conn=function(mac){
 							},30);
 						});
 					},60);
-				});
+				//});
 			}else if (n=="hornOff") {
 				euc.is.horn=0;
 			}else if (n=="start") {
