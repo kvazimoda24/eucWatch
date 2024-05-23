@@ -241,6 +241,7 @@ euc.temp.parseLiveV13 = function (inc) {
 //
 euc.temp.liveAll = function () {
   euc.is.lastGetLive = getTime();
+  euc.is.alert=0;
   //batt
   euc.dash.live.bat = Math.round(100*(euc.dash.live.volt*(100/euc.dash.opt.bat.pack) - euc.dash.opt.bat.low ) / (euc.dash.opt.bat.hi-euc.dash.opt.bat.low));
   euc.log.batL.unshift(euc.dash.live.bat);
@@ -263,7 +264,6 @@ euc.temp.liveAll = function () {
     if (euc.dash.alrt.amp.hapt.hi<=euc.dash.live.amp)	euc.is.alert =  euc.is.alert + 1 + Math.round( (euc.dash.live.amp - euc.dash.alrt.amp.hapt.hi) / euc.dash.alrt.amp.hapt.step) ;
     else euc.is.alert =  euc.is.alert + 1 + Math.round(-(euc.dash.live.amp - euc.dash.alrt.amp.hapt.low) / euc.dash.alrt.amp.hapt.step) ;
   }
-  euc.is.alert=0;
   //alarm
   euc.dash.alrt.pwr=0;
   //log
