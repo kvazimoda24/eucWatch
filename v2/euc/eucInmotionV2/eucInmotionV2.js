@@ -94,6 +94,7 @@ function getModelName(id) {
     case 6: euc.temp.parseLive = euc.temp.parseLiveV11v2; return "V11";
     case 7: euc.temp.parseLive = euc.temp.parseLiveV12; return "V12";
     case 8: euc.temp.parseLive = euc.temp.parseLiveV13; return "V13";
+    case 9: euc.temp.parseLive = euc.temp.parseLiveV13; return "V14";
   }
   return "UNKNOWN";
 };
@@ -218,10 +219,10 @@ euc.temp.parseLiveV12 = function (inc) {
 };
 //
 euc.temp.parseLiveV13 = function (inc) {
-  if (ew.is.bt==2) console.log("Parse realtime data (V13)");
+  if (ew.is.bt==2) console.log("Parse realtime data (V13/14)");
   let lala = new DataView(inc);
   let dataLen = lala.getUint8(3);
-  if (dataLen<62) {
+  if (dataLen<65) {
     if (ew.is.bt===2) console.log("Short package. dataLen=", dataLen.toString(10));
     return;
   }
@@ -231,13 +232,39 @@ euc.temp.parseLiveV13 = function (inc) {
   euc.dash.live.amp = lala.getInt16(7, true) / 100;
   //speed
   euc.dash.live.spd = Math.abs(lala.getInt16(13, true) / 100);
+  //pwm
+  euc.dash.live.pwm = lala.getInt16(19, true);
   //temp
   // mosfet temp
   euc.dash.live.tmp = lala.getUint8(63) - 176;
   // battery temp
-  euc.dash.live.tmp2 = lala.getUint8(65) - 176;
+  euc.dash.live.tmp2 = lala.getUint8(64) - 176;
   euc.temp.liveAll();
 };
+//
+//euc.temp.parseLiveV14 = function (inc) {
+//  if (ew.is.bt==2) console.log("Parse realtime data (V14)");
+//  let lala = new DataView(inc);
+//  let dataLen = lala.getUint8(3);
+//  if (dataLen<65) {
+//    if (ew.is.bt===2) console.log("Short package. dataLen=", dataLen.toString(10));
+//    return;
+//  }
+//  //volt
+//  euc.dash.live.volt = lala.getUint16(5, true) / 100;
+//  //amp
+//  euc.dash.live.amp = lala.getInt16(7, true) / 100;
+//  //speed
+//  euc.dash.live.spd = Math.abs(lala.getInt16(13, true) / 100);
+//  //pwm
+//  euc.dash.live.pwm = lala.getInt16(19, true);
+//  //temp
+//  // mosfet temp
+//  euc.dash.live.tmp = lala.getUint8(63) - 176;
+//  // battery temp
+//  euc.dash.live.tmp2 = lala.getUint8(64) - 176;
+//  euc.temp.liveAll();
+//};
 //
 euc.temp.liveAll = function () {
   euc.is.lastGetLive = getTime();
