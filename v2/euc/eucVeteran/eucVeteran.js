@@ -108,25 +108,48 @@ euc.temp.inpk = function(event) {
   if (ew.is.bt==5) euc.proxy.w(inc);
   if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran IN:",[].map.call(inc, x => x.toString(16)).toString());
 
-  if ( inc.length>4 && inc[0]==0xDC && inc[1]==0x5A && inc[2]==0x5C ) euc.temp.tot=E.toUint8Array(inc);
-  else if (euc.temp.tot.buffer.length>1) euc.temp.tot=E.toUint8Array(euc.temp.last,inc);
-  else return;
+  if (typeof euc.temp.last === "undefined") euc.temp.tot=E.toUint8Array(inc);
+  else euc.temp.tot=E.toUint8Array(euc.temp.last,inc);
   euc.temp.last=E.toUint8Array(euc.temp.tot.buffer);
 
-  let needBufLen=euc.temp.tot.buffer[3] + 4;
-  if (euc.temp.tot.buffer.length < needBufLen) return;
-
-  if (euc.temp.tot.buffer.length == needBufLen) {
-    if (ew.is.bt===2) console.log("Veteran: in: length:",euc.temp.tot.buffer.length," data :",[].map.call(euc.temp.tot, x => x.toString(16)).toString());
-    if (checksum(euc.temp.tot.buffer)) {
-      euc.temp.liveParse(euc.temp.tot.buffer);
-    } else {
-      if (ew.is.bt===2) console.log("Packet checksum error. Dropped.");
+  let i = 0;
+  while (i < euc.temp.last.buffer.length) {
+	i = euc.temp.last.indexOf(0xDC, i);
+	if (i == -1) {
+      if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran: 0xDC not found");
+      euc.temp.tot=E.toUint8Array([0]);
+	  euc.temp.last=E.toUint8Array([0]);
+	  return;
     }
-  } else if (ew.is.bt===2) console.log("Packet size error. Dropped.");
-
-  euc.temp.tot=E.toUint8Array([0]);
-  euc.temp.last=E.toUint8Array(euc.temp.tot.buffer);
+    if (i+3 > euc.temp.last.buffer.length) {
+      if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran: i+3>buffer.length");
+      euc.temp.tot=E.toUint8Array(euc.temp.last.subarray(i));
+	  euc.temp.last=E.toUint8Array(euc.temp.tot.buffer);
+      return;
+    }
+    if (euc.temp.last.buffer[i+1]!=0x5A || euc.temp.last.buffer[i+2]!=0x5C) {
+      if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran: Not a title");
+      i++;
+      continue;
+    }
+    let needBufLen=euc.temp.tot.buffer[i+3] + 4; // !!!!!
+    if (i+needBufLen > euc.temp.last.buffer.length) {
+      if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran: i+needBufLen>buffer.length");
+      euc.temp.tot=E.toUint8Array(euc.temp.last.subarray(i));
+	  euc.temp.last=E.toUint8Array(euc.temp.tot.buffer);
+      return;
+    }
+	euc.temp.tot=E.toUint8Array(euc.temp.last.subarray(i,i+needBufLen));
+	if (!checksum(euc.temp.tot.buffer)) {
+      if (ew.is.bt===2 && euc.dbg==1) console.log("<DBG> Veteran: checksum error");
+      i++;
+      continue;
+	}
+    euc.temp.last=E.toUint8Array(euc.temp.last.subarray(i+needBufLen+1));
+	break;
+  }
+  if (ew.is.bt===2) console.log("Veteran: in: length:",euc.temp.tot.buffer.length," data :",[].map.call(euc.temp.tot, x => x.toString(16)).toString());
+  euc.temp.liveParse(euc.temp.tot.buffer);
 }
 //start
 euc.wri=function(i) {if (ew.def.cli) console.log("not connected yet"); if (i=="end") euc.off(); return;};
