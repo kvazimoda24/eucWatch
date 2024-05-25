@@ -163,7 +163,7 @@ face[0] = {
     //this.spd=Math.round(euc.dash.live.spd);
     this.g.setColor(0,(euc.dash.alrt.spd.cc==1)?0:this.spdC[euc.dash.alrt.spd.cc]);
     this.g.fillRect(0,80,239,195);
-    this.g.setColor(1,(euc.dash.alrt.spd.cc==1)?13:15);
+    this.g.setColor(1,(euc.dash.alrt.spd.cc==1)?14:15);
     this.g.setFontVector(110);
     this.g.drawString(Math.round(this.spd*this.spdF),130-(this.g.stringWidth(Math.round(this.spd*this.spdF))/2),90);
     this.g.flip();
