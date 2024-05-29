@@ -89,7 +89,7 @@ function validateChecksum(buffer) {
   let calculatedChecksum = array.reduce(checksum)&0xFF;
   return receivedChecksum == calculatedChecksum;
 };
-function getModelName(id) {
+euc.temp.getModelName = function (id) {
   switch (id) {
     case 6: euc.temp.parseLive = euc.temp.parseLiveV11v2; return "V11";
     case 7: euc.temp.parseLive = euc.temp.parseLiveV12; return "V12";
@@ -108,7 +108,7 @@ euc.temp.parseMainInfo = function (inc) {
     // 020701010100 -v12
     // 020801010100 -v13
     let series = lala.getUint8(7);
-    euc.dash.info.get.modl=getModelName(series);
+    euc.dash.info.get.modl=euc.temp.getModelName(series);
     euc.dash.info.get.makr = "Inmotion";
     euc.dash.info.get.mac = euc.mac;
     if (!ew.do.fileRead("dash","slot"+ew.do.fileRead("dash","slot")+"Name") || ew.do.fileRead("dash","slot"+ew.do.fileRead("dash","slot")+"Name") != euc.dash.info.get.modl)
@@ -340,7 +340,7 @@ euc.temp.parseStats = function (inc) {
   if (2<euc.dbg) print("ride time :", euc.dash.timR);
 };
 //
-crutchDoubleA5 = function(buf) {
+euc.temp.crutchDoubleA5 = function(buf) {
   let len = buf.length,
       oldByte = 0x00,
       flag = 0x00,
@@ -381,7 +381,15 @@ crutchDoubleA5 = function(buf) {
 };
 //
 euc.temp.inpk = function(event) {
+  if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: event.target.value: ",event.target.value);
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: packet in: ",[].map.call(event.target.value.buffer, x => x.toString(16)).toString());
+  if (euc.temp.rTemp) {clearTimeout(euc.temp.rTemp); euc.temp.rTemp=0;}
+  euc.temp.rTemp = setTimeout(function(){
+    euc.temp.rCha.readValue().then(function(d) {
+      if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: readValue:", d.buffer);
+    });
+  },30);
+  console.log("Got:", JSON.stringify(d.buffer));
   //gather package
   let inc=event.target.value.buffer;
   if (ew.is.bt==5) euc.proxy.w(inc);
@@ -396,7 +404,7 @@ euc.temp.inpk = function(event) {
   delete euc.temp.last;
   if (euc.temp.tot.buffer.length > needBufLen) {
     if (ew.is.bt===2) console.log("InmotionV2: Packet size error. Trying a crutch.");
-    euc.temp.tot = crutchDoubleA5(euc.temp.tot);
+    euc.temp.tot = euc.temp.crutchDoubleA5(euc.temp.tot);
   }
   if (ew.is.bt===2) console.log("InmotionV2: in: length: ",euc.temp.tot.buffer.length," data: ",[].map.call(euc.temp.tot, x => x.toString(16)).toString());
   // Check packet
