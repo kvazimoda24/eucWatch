@@ -360,8 +360,8 @@ crutchDoubleA5 = function(buf) {
         case 0:
           if (buf[i] == 0xAA && oldByte == 0xAA) p = 1;
       }
-      oldByte = buf[i];
-    } else oldByte = buf[i];
+    }
+    oldByte = buf[i];
     if (p>2) break;
   }
   if (len === needLen) return buf;
