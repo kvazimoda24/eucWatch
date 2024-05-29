@@ -346,13 +346,13 @@ crutchDoubleA5 = function(buf) {
       flag = 0x00,
       p = 0,
       i, needLen;
-  searchHead: for (i = 0; i < len; i++) {
+  for (i = 0; i < len; i++) {
     if (buf[i] != 0xA5 || oldByte == 0xA5){
       switch (p) {
         case 2:
           needLen = buf[i] + 5;
-          oldByte = buf[i];
-          break searchHead;
+          p++;
+          break;
         case 1:
           flag = buf[i];
           p++;
@@ -362,6 +362,7 @@ crutchDoubleA5 = function(buf) {
       }
       oldByte = buf[i];
     } else oldByte = buf[i];
+    if (p>2) break;
   }
   if (len === needLen) return buf;
   let newArr = new Uint8Array(needLen);
