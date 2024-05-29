@@ -345,8 +345,9 @@ crutchDoubleA5 = function(buf) {
       oldByte = 0x00,
       flag = 0x00,
       p = 0,
-      i, needLen;
-  for (i = 0; i < len; i++) {
+      i = 0,
+      needLen = 0;
+  while (i < len && p < 3) {
     if (buf[i] != 0xA5 || oldByte == 0xA5){
       switch (p) {
         case 2:
@@ -358,21 +359,22 @@ crutchDoubleA5 = function(buf) {
           p++;
           break;
         case 0:
-          if (buf[i] == 0xAA && oldByte == 0xAA) p = 1;
+          if (buf[i] == 0xAA && oldByte == 0xAA) p++;
       }
     }
     oldByte = buf[i];
-    if (p>2) break;
+    i++;
   }
   if (len === needLen) return buf;
   let newArr = new Uint8Array(needLen);
   newArr.set(0xAA, 0xAA, flag, oldByte);
   p = 4;
-  for (i++; i < len && p < needLen; i++) {
+  while (i < len && p < needLen) {
     if (buf[i] != 0xA5 || oldByte == 0xA5){
       newArr[p] = buf[i];
       p++;
     } else oldByte = buf[i];
+    i++;
   }
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: in after crutch: length: ", needLen, " data: ",[].map.call(newArr, x => x.toString(16)).toString());
   return newArr;
