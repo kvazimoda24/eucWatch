@@ -383,12 +383,12 @@ euc.temp.crutchDoubleA5 = function(buf) {
 euc.temp.inpk = function(event) {
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: event.target.value: ",event.target.value);
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: packet in: ",[].map.call(event.target.value.buffer, x => x.toString(16)).toString());
-  if (euc.temp.rTemp) {clearTimeout(euc.temp.rTemp); euc.temp.rTemp=0;}
-  euc.temp.rTemp = setTimeout(function(){
-    euc.temp.rCha.readValue().then(function(d) {
-      if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: readValue:", d.buffer);
-    });
-  },30);
+//  if (euc.temp.rTemp) {clearTimeout(euc.temp.rTemp); euc.temp.rTemp=0;}
+//  euc.temp.rTemp = setTimeout(function(){
+//    euc.temp.rCha.readValue().then(function(d) {
+//      if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: readValue:", d.buffer);
+//    });
+//  },30);
   console.log("Got:", JSON.stringify(d.buffer));
   //gather package
   let inc=event.target.value.buffer;
@@ -486,7 +486,7 @@ euc.conn=function(mac){
   euc.dash.trip.startStrip = 0;
   euc.temp.keepAlive.state = 0;
   if (euc.tout.reconnect) {clearTimeout(euc.tout.reconnect); euc.tout.reconnect=0;}
-  NRF.connect(mac,{minInterval:7.5, maxInterval:15})
+  NRF.connect(mac,{minInterval:7.5, maxInterval:30})
     .then(function(g) {
       euc.gatt=g;
       return g.getPrimaryService("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
