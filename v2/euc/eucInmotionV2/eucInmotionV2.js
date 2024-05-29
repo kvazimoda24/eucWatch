@@ -389,7 +389,7 @@ euc.temp.inpk = function(event) {
 //      if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: readValue:", d.buffer);
 //    });
 //  },30);
-  console.log("Got:", JSON.stringify(d.buffer));
+//  console.log("Got:", JSON.stringify(d.buffer));
   //gather package
   let inc=event.target.value.buffer;
   if (ew.is.bt==5) euc.proxy.w(inc);
