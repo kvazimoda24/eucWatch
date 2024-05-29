@@ -367,7 +367,7 @@ crutchDoubleA5 = function(buf) {
   }
   if (len === needLen) return buf;
   let newArr = new Uint8Array(needLen);
-  newArr.set(0xAA, 0xAA, flag, oldByte);
+  newArr.set([0xAA, 0xAA, flag, oldByte]);
   p = 4;
   while (i < len && p < needLen) {
     if (buf[i] != 0xA5 || oldByte == 0xA5){
