@@ -341,18 +341,37 @@ euc.temp.parseStats = function (inc) {
 };
 //
 crutchDoubleA5 = function(buf) {
-  let len = buf.length;
-  let needLen = buf[3] + 5;
+  let len = buf.length,
+      oldByte = 0x00,
+      flag = 0x00,
+      p = 0,
+      i, needLen;
+  searchHead: for (i = 0; i < len; i++) {
+    if (buf[i] != 0xA5 || oldByte == 0xA5){
+      switch (p) {
+        case 2:
+          needLen = buf[i] + 5;
+          oldByte = buf[i];
+          break searchHead;
+        case 1:
+          flag = buf[i];
+          p++;
+          break;
+        case 0:
+          if (buf[i] == 0xAA && oldByte == 0xAA) p = 1;
+      }
+      oldByte = buf[i];
+    } else oldByte = buf[i];
+  }
   if (len === needLen) return buf;
-  let oldByte = 0x00;
-  let p = 0;
   let newArr = new Uint8Array(needLen);
-  for (i = 0; i < len; i++) {
-    if (p >= needLen) break;
-    if (oldByte === 0xA5 && buf[i] === 0xA5) continue;
-    newArr[p] = buf[i];
-    oldByte = buf[i];
-    p++;
+  newArr.set(0xAA, 0xAA, flag, oldByte);
+  p = 4;
+  for (i++; i < len && p < needLen; i++) {
+    if (buf[i] != 0xA5 || oldByte == 0xA5){
+      newArr[p] = buf[i];
+      p++;
+    } else oldByte = buf[i];
   }
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: in after crutch: length: ", needLen, " data: ",[].map.call(newArr, x => x.toString(16)).toString());
   return newArr;
