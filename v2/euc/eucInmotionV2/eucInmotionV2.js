@@ -381,15 +381,7 @@ euc.temp.crutchDoubleA5 = function(buf) {
 };
 //
 euc.temp.inpk = function(event) {
-  if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: event.target.value: ",event.target.value);
   if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: packet in: ",[].map.call(event.target.value.buffer, x => x.toString(16)).toString());
-//  if (euc.temp.rTemp) {clearTimeout(euc.temp.rTemp); euc.temp.rTemp=0;}
-//  euc.temp.rTemp = setTimeout(function(){
-//    euc.temp.rCha.readValue().then(function(d) {
-//      if (ew.is.bt===2&&euc.dbg==3) console.log("InmotionV2: readValue:", d.buffer);
-//    });
-//  },30);
-//  console.log("Got:", JSON.stringify(d.buffer));
   //gather package
   let inc=event.target.value.buffer;
   if (ew.is.bt==5) euc.proxy.w(inc);
