@@ -164,9 +164,14 @@ touchHandler[0]=function(e,x,y){
 				}
 			}else if (face[0].set=="amp") { //amp
 				buzzer.nav([30,50,30]);
-				if (y<=65){ //uphill
-					if (120<=x&&euc.dash.alrt.amp.hapt.hi<50) euc.dash.alrt.amp.hapt.hi++;
-					else if (x<=120&&10<euc.dash.alrt.amp.hapt.hi) euc.dash.alrt.amp.hapt.hi--;
+				if (y<66){ //uphill
+					if (x>119&&euc.dash.alrt.amp.hapt.hi<1000) {
+						if(euc.dash.alrt.amp.hapt.hi>99) euc.dash.alrt.amp.hapt.hi+=5;
+						else euc.dash.alrt.amp.hapt.hi++;
+					} else if (x<120&&euc.dash.alrt.amp.hapt.hi>1) {
+						if (euc.dash.alrt.amp.hapt.hi>100) euc.dash.alrt.amp.hapt.hi-=5;
+						else euc.dash.alrt.amp.hapt.hi--;
+					}
 					if (!face[0].ampa) { face[0].ampa=1;face[0].ampd=0;face[0].ampr=0;
 						face[0].btn(1,"BRAKING:",20,65,90,1,0,0,66,239,132,euc.dash.alrt.amp.hapt.low+ " A",35,182,84);
 						face[0].btn(1,"RESOLUTION:",17,70,157,2,0,0,135,239,195,euc.dash.alrt.amp.hapt.step+ " A",35,190,150);
@@ -176,9 +181,14 @@ touchHandler[0]=function(e,x,y){
 						face[0].btn(1,"UPHILL:",20,65,23,12,0,0,0,239,63,euc.dash.alrt.amp.hapt.hi+" A",35,180,16);
 						face[0].ntfy("ALERT IF OVER "+euc.dash.alrt.amp.hapt.hi+" A","",18,12,1);
 					},0);
-				}else if (65<=y&&y<=133){//braking
-					if (x<=120&&euc.dash.alrt.amp.hapt.low<-5) euc.dash.alrt.amp.hapt.low++;
-					else if (120<=x&&-40<euc.dash.alrt.amp.hapt.low) euc.dash.alrt.amp.hapt.low--;
+				}else if (y>65&&y<134){//braking
+					if (x>119&&euc.dash.alrt.amp.hapt.low<-1) {
+						if (euc.dash.alrt.amp.hapt.low<-100) euc.dash.alrt.amp.hapt.low+=5;
+						else euc.dash.alrt.amp.hapt.low++;
+					} else if (x<120&&euc.dash.alrt.amp.hapt.low>-1000) {
+						if (euc.dash.alrt.amp.hapt.low<-99) euc.dash.alrt.amp.hapt.low-=5;
+						else euc.dash.alrt.amp.hapt.low--;
+					}
 					if (!face[0].ampd) { face[0].ampa=0;face[0].ampd=1;face[0].ampr=0;
 						face[0].btn(1,"UPHILL:",20,65,23,2,0,0,0,239,63,euc.dash.alrt.amp.hapt.hi+" A",35,180,16);
 						face[0].btn(1,"RESOLUTION:",17,70,157,2,0,0,135,239,195,euc.dash.alrt.amp.hapt.step+ " A",35,190,150);
@@ -187,9 +197,9 @@ touchHandler[0]=function(e,x,y){
 						face[0].btn(1,"BRAKING:",20,65,90,12,0,0,66,239,132,euc.dash.alrt.amp.hapt.low+ " A",35,182,84);
 						face[0].ntfy("ALERT IF UNDER "+euc.dash.alrt.amp.hapt.low+" A","",18,12,1);
 					},0);
-				}else  if  (y<=195) {//RESOLUTION
-					if (120<=x&&euc.dash.alrt.amp.hapt.step<3) euc.dash.alrt.amp.hapt.step++;
-					else if (x<=120&&1<euc.dash.alrt.amp.hapt.step) euc.dash.alrt.amp.hapt.step--;
+				}else  if  (y<196) {//RESOLUTION
+					if (x>119&&euc.dash.alrt.amp.hapt.step<15) euc.dash.alrt.amp.hapt.step++;
+					else if (x<120&&euc.dash.alrt.amp.hapt.step>1) euc.dash.alrt.amp.hapt.step--;
 					if (!face[0].ampr) { face[0].ampa=0;face[0].ampd=0;face[0].ampr=1;
 						face[0].btn(1,"BRAKING:",20,65,90,1,0,0,66,239,132,euc.dash.alrt.amp.hapt.low+ " A",35,182,84);
 						face[0].btn(1,"UPHILL:",20,65,23,2,0,0,0,239,63,euc.dash.alrt.amp.hapt.hi+" A",35,180,16);

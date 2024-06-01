@@ -270,7 +270,7 @@
 	{ "id": "dash",
 		"name": "EUC Dashboard",
 		"icon": "../../P8-testing/dash/icon.png",
-		"version":"1.94.7",
+		"version":"1.94.8",
 		"description": "EUC dashboard. Garage, scan and dash faces. Depends on EUC modules.",
 		"tags": "euc",
 	    "needsFeatures":["V1"],
@@ -424,14 +424,14 @@
 	{ "id": "dashInmotionV2",
 		"name": "Inmotion V2 Settings (TEST)",
 		"icon": "../../P8-testing/dashInmotionV2/icon.png",
-		"version":"0.1",
+		"version":"1.0",
 		"description": "EUC dashboard, Inmotion V11/12/13 settings gui files.",
 		"tags": "euc",
-	    "needsFeatures":["V1"],
+		"needsFeatures":["V1"],
 		"readme": "README.md",
 		"storage": [
 			{"name":"dashInmotionV2","url":"../../P8-testing/dashInmotionV2/dashInmotionV2.js"}
-    ]
+		]
 	},
 	{ "id": "dashVeteran",
 		"name": "Veteran Settings",
