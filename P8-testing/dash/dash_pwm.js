@@ -62,7 +62,7 @@ face[0] = {
     this.tid=setTimeout(function(t){
       t.tid=-1;
       t.show();
-    },50,this);
+    },300,this);
     this.afterScrOff=false;
   },
   pwmf: function(){

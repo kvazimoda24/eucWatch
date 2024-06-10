@@ -90,7 +90,7 @@ face[0] = {
 			t.tid = -1;
 			t.show();
 			if (ew.dbg) print("simple dash, time in loop",getTime()-tm);
-		}, 100, this);
+		}, 300, this);
 		this.afterScrOff=false;
 	},
 	tmpf: function() {
