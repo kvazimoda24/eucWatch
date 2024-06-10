@@ -767,7 +767,7 @@
 	{ "id": "eucKingsong",
 		"name": "Kingsong module",
 		"icon": "../../v2/euc/eucKingsong/icon.png",
-		"version":"1.94.11",
+		"version":"1.94.12",
 		"description": "EUC module for Kingsong.",
 		"tags": "euc",
 		"type": "euc",
