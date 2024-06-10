@@ -319,7 +319,7 @@ euc.temp.resp = function(inpk) {
 		if (2 < euc.dbg) print("in ", inpk[16]);
 	}else if (inpk[16] == 179) {
 		let wc = { "W": "WHITE", "B": "BLACK", "S": "SILVER GRAY", "Y": "YELLOW", "R": "RED", "D": "RUBBER BLACK", "C": "CUSTOM" };
-		let model = {
+/*		let model = {
 			"14D": [1, 340, 420, 680, 840],
 			"16D": [1, 340, 420, 680, 840, 520],
 			"16S": [1, 680, 840, 0, 420],
@@ -333,16 +333,16 @@ euc.temp.resp = function(inpk) {
 			"SA0": [1.875, 2220],
 			"SA1": [1.875, 2220],
 			"SA2": [1.875, 2220]
-		};
+		}; */
 		//global.lala = inpk;
 		euc.dash.info.get.serl = E.toString(inpk.slice(2, 16), inpk.slice(17, 20));
 		euc.dash.info.get.manD = E.toString(inpk[11], inpk[12], "-", inpk[13], inpk[14], "-20", inpk[9], inpk[10]);
 		euc.dash.info.get.colr = wc[E.toString(inpk[8])];
 		euc.dash.info.get.modl = E.toString(inpk.slice(4, 7));
-		euc.dash.opt.bat.mAh = model[euc.dash.info.get.modl][inpk[7] - 48];
-		euc.dash.opt.bat.pack = model[euc.dash.info.get.modl][0];
+//		euc.dash.opt.bat.mAh = model[euc.dash.info.get.modl][inpk[7] - 48];
+//		euc.dash.opt.bat.pack = model[euc.dash.info.get.modl][0];
 		wc = 0;
-		model = 0;
+//		model = 0;
 
 	}
 	else if (inpk[16] == 181) {
