@@ -33,7 +33,7 @@ face[0] = {
 		this.fact=euc.dash.opt.unit.fact.spd*((ew.def.dash.mph)?0.625:1);
 		this.trpF=euc.dash.opt.unit.fact.dist*((ew.def.dash.mph)?0.625:1);
 		this.run=true;
-		if (typeof this.afterScrOff == "undefined") this.afterScrOff=false;
+		//if (typeof this.afterScrOff == "undefined") this.afterScrOff=false;
 	},
 	show : function(o){
 		if (!this.run) return;
@@ -80,13 +80,13 @@ face[0] = {
 			//Mileage
 			if (euc.dash.alrt.warn.txt) this.almTF();
 			else if (this.trpL!=euc.dash.trip.last.toFixed(2)) this.mileage();
-			this.afterScrOff=false;
+			//this.afterScrOff=false;
 		//off
 		} else if (euc.state=="OFF")  {
 			setTimeout(function(){
 				face.go("dashOff",0);
 			},250);
-			this.afterScrOff=false;
+			//this.afterScrOff=false;
 			return;
 		//rest
 			} else  {
@@ -112,22 +112,22 @@ face[0] = {
 			t.tid=-1;
 			t.show();
 		},300,this);
-		this.afterScrOff=false;
+		//this.afterScrOff=false;
 	},
 	spdF: function(){
 		"ram";
-		if ( Math.abs(euc.dash.live.spd-this.spd) <5 || this.afterScrOff) this.spd =Math.round(euc.dash.live.spd);
-		else if (euc.dash.live.spd<this.spd) this.spd=Math.round(this.spd-(this.spd-euc.dash.live.spd)/2);
-		else this.spd=Math.round(this.spd+(euc.dash.live.spd-this.spd)/2);
-		//this.spd=Math.round(euc.dash.live.spd);
+		//if ( Math.abs(euc.dash.live.spd-this.spd) <5 || this.afterScrOff) this.spd =Math.round(euc.dash.live.spd);
+		//else if (euc.dash.live.spd<this.spd) this.spd=Math.round(this.spd-(this.spd-euc.dash.live.spd)/2);
+		//else this.spd=Math.round(this.spd+(euc.dash.live.spd-this.spd)/2);
+		this.spd=Math.round(euc.dash.live.spd);
+		let spdT=Math.round(this.spd*this.fact);
 		this.g.setColor(0,(euc.dash.alrt.spd.cc==1)?0:this.spdC[euc.dash.alrt.spd.cc]);
 		this.g.fillRect(43,54,197,170);
 		this.g.setColor(1,(euc.dash.alrt.spd.cc==1)?14:15);
-		if (this.spd < 100) this.g.setFontVector(130);
-		else this.g.setFontVector(80);
-		this.g.drawString(Math.round(this.spd*this.fact),129-(this.g.stringWidth(Math.round(this.spd*this.fact))/2),(100 <= this.spd)?75:57);
+		this.g.setFontVector((spdT<100)?130:80)
+		this.g.drawString(spdT,129-(this.g.stringWidth(spdT)/2),(spdT<100)?57:75);
 		this.g.flip();
-		if (this.spd==0 && this.topP<50) {
+		if (this.spdT==0 && this.topP<50) {
 			this.topP=-1;
 			this.bar=1;
 			this.barF();
@@ -378,7 +378,7 @@ face[0] = {
 	off: function(){
 		this.g.off();
 		this.clear();
-		this.afterScrOff=true;
+		//this.afterScrOff=true;
 	}
 };
 //loop face
