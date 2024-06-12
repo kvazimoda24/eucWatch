@@ -120,25 +120,33 @@ face[0] = {
   },
   scan: function(){
     this.act=1;
-    if (tpms.status=="SUCCESS") {
-      this.page=0;
-      tpms.def.ref=0;
-      this.tpms=Object.keys(tpms.def.list).map(key => String(key));
-      tpms.def.pos=this.tpms.indexOf(tpms.def.id);
-      this.log=require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1);
-      this.sc();
-      let cl=((getTime()|0) - this.log[0].time < 1800)?1:0;
-      this.btn(cl,this.tpms[tpms.def.pos],35,75,7,(this.log[tpms.def.ref].psi<tpms.def.list[this.tpms[tpms.def.pos]].lowP||tpms.def.list[this.tpms[tpms.def.pos]].hiP<this.log[tpms.def.ref].psi)?13:4,1,0,0,149,50);
-      this.btn(1,tpms.def.pos+1+"/"+this.tpms.length,35,200,7,0,4,150,0,239,50);
-      this.sel(this.log[tpms.def.ref][tpms.def.metric],"JUST NOW");
-      this.foot="bar";
-      this.ntfy("FOUND : "+tpms.new,"",27,4,1,2);
-      return;
-    } else if (tpms.status=="NOT FOUND") {
-      this.ntfy(tpms.status,"",27,13,1,2);
+    switch(tpms.status) {
+      case "SUCCESS":
+        this.page=0;
+        tpms.def.ref=0;
+        this.tpms=Object.keys(tpms.def.list).map(key => String(key));
+        tpms.def.pos=this.tpms.indexOf(tpms.def.id);
+        this.log=require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1);
+        this.sc();
+        let cl=((getTime()|0) - this.log[0].time < 1800)?1:0;
+        this.btn(cl,this.tpms[tpms.def.pos],35,75,7,(this.log[tpms.def.ref].psi<tpms.def.list[this.tpms[tpms.def.pos]].lowP||tpms.def.list[this.tpms[tpms.def.pos]].hiP<this.log[tpms.def.ref].psi)?13:4,1,0,0,149,50);
+        this.btn(1,tpms.def.pos+1+"/"+this.tpms.length,35,200,7,0,4,150,0,239,50);
+        this.sel(this.log[tpms.def.ref][tpms.def.metric],"JUST NOW");
+        this.foot="bar";
+        this.ntfy("FOUND : "+tpms.new,"",27,4,1,2);
+        return;
+      case "NOT FOUND":
+      case "ERROR":
+        this.ntfy(tpms.status,"",27,13,1,2);
+        return;
+    }
+    let tPas = tpms.def.wait-( (getTime()|0)-tpms.cnt);
+    if (tPas<-10) {
+      tpms.status="ERROR";
+      t.scan();
       return;
     }
-    this.btn(1,tpms.status+" "+(tpms.def.wait-( (getTime()|0)-tpms.cnt) ),27,120,205,12,0,0,190,239,239,"",22,120,225);
+    this.btn(1,tpms.status+" "+ t,27,120,205,12,0,0,190,239,239,"",22,120,225);
     //refresh
     if (this.stid>=0) clearTimeout(this.stid);
     this.stid=setTimeout(function(t){

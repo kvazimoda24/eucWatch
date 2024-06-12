@@ -78,10 +78,19 @@ tpms= {
     return dev;
   },
   find:(rp,sl)=>{
+    let parseFunc;
     let serviceLst = ["fbb0", "27a5"];
     NRF.findDevices(function(devices) {
       serviceLst.forEach(function(service) {
-        let parseFunc = new Function("device", "return tpms.type_" + service + "(device)");
+        switch(service) {
+          case "fbb0":
+            parseFunc=tpms.type_fbb0;
+            break;
+          case "27a5":
+            parseFunc=tpms.type_27a5;
+            break;
+        }
+        //let parseFunc = new Function("device", "return tpms.type_" + service + "(device)");
         devicesFilter = NRF.filterDevices(devices, [{services:[ service ]}] );
         devicesFilter.forEach(function(device) {
           if (ew.is.bt===2 && tpms.dbg == 1) console.log(device);
