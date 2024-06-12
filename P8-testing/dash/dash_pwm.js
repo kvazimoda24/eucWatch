@@ -27,7 +27,7 @@ face[0] = {
     this.spdF=euc.dash.opt.unit.fact.spd*((ew.def.dash.mph)?0.625:1);
     this.trpF=euc.dash.opt.unit.fact.dist*((ew.def.dash.mph)?0.625:1);
     this.run=true;
-    if (typeof this.afterScrOff == "undefined") this.afterScrOff=false;
+    //if (typeof this.afterScrOff == "undefined") this.afterScrOff=false;
   },
   show : function(o){
     if (!this.run) return;
@@ -39,12 +39,12 @@ face[0] = {
       else if (this.volt!=euc.dash.live.volt.toFixed(1)) this.vltf();
       //if (this.pwm1!=euc.dash.live.pwm) this.pwmE();
       if (euc.dash.info.get.makr=="Begode"&&!euc.temp.ext) euc.wri("extendedPacket");
-      this.afterScrOff=false;
+      //this.afterScrOff=false;
     } else if (euc.state=="OFF") {
       setTimeout(function(){
         face.go("dashOff",0);
       },150);
-      this.afterScrOff=false;
+      //this.afterScrOff=false;
       return;
       //rest
     } else {
@@ -63,12 +63,13 @@ face[0] = {
       t.tid=-1;
       t.show();
     },300,this);
-    this.afterScrOff=false;
+    //this.afterScrOff=false;
   },
   pwmf: function(){
-    if ( Math.abs(euc.dash.live.pwm-this.pwm) <5 || this.afterScrOff) this.pwm =Math.round(euc.dash.live.pwm);
-    else if (euc.dash.live.pwm<this.pwm) this.pwm=Math.round(this.pwm-(this.pwm-euc.dash.live.pwm)/2);
-    else this.pwm=Math.round(this.pwm+(euc.dash.live.pwm-this.pwm)/2);
+    //if ( Math.abs(euc.dash.live.pwm-this.pwm) <5 || this.afterScrOff) this.pwm =Math.round(euc.dash.live.pwm);
+    //else if (euc.dash.live.pwm<this.pwm) this.pwm=Math.round(this.pwm-(this.pwm-euc.dash.live.pwm)/2);
+    //else this.pwm=Math.round(this.pwm+(euc.dash.live.pwm-this.pwm)/2);
+    this.pwm = Math.round(euc.dash.live.pwm);
     this.g.setColor(0,75<this.pwm?13:1);
     this.g.fillRect(155,0,239,35); //amp
     this.g.setColor(1,15);
@@ -157,10 +158,10 @@ face[0] = {
     this.g.flip();
   },
   spdf: function(){
-    if ( Math.abs(euc.dash.live.spd-this.spd) <5 || this.afterScrOff) this.spd =Math.round(euc.dash.live.spd);
-    else if (euc.dash.live.spd<this.spd) this.spd=Math.round(this.spd-(this.spd-euc.dash.live.spd)/2);
-    else this.spd=Math.round(this.spd+(euc.dash.live.spd-this.spd)/2);
-    //this.spd=Math.round(euc.dash.live.spd);
+    //if ( Math.abs(euc.dash.live.spd-this.spd) <5 || this.afterScrOff) this.spd =Math.round(euc.dash.live.spd);
+    //else if (euc.dash.live.spd<this.spd) this.spd=Math.round(this.spd-(this.spd-euc.dash.live.spd)/2);
+    //else this.spd=Math.round(this.spd+(euc.dash.live.spd-this.spd)/2);
+    this.spd=Math.round(euc.dash.live.spd);
     this.g.setColor(0,(euc.dash.alrt.spd.cc==1)?0:this.spdC[euc.dash.alrt.spd.cc]);
     this.g.fillRect(0,80,239,195);
     this.g.setColor(1,(euc.dash.alrt.spd.cc==1)?14:15);
@@ -188,7 +189,7 @@ face[0] = {
   off: function(){
     this.g.off();
     this.clear();
-	  this.afterScrOff=true;
+	  //this.afterScrOff=true;
   }
 };
 //loop face
