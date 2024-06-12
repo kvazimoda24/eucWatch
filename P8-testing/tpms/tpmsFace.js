@@ -146,7 +146,7 @@ face[0] = {
       t.scan();
       return;
     }
-    this.btn(1,tpms.status+" "+ t,27,120,205,12,0,0,190,239,239,"",22,120,225);
+    this.btn(1,tpms.status+" "+ tPas,27,120,205,12,0,0,190,239,239,"",22,120,225);
     //refresh
     if (this.stid>=0) clearTimeout(this.stid);
     this.stid=setTimeout(function(t){
