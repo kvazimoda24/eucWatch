@@ -143,7 +143,7 @@ face[0] = {
     let tPas = tpms.def.wait-( (getTime()|0)-tpms.cnt);
     if (tPas<-10) {
       tpms.status="ERROR";
-      t.scan();
+      tpms.scan();
       return;
     }
     this.btn(1,tpms.status+" "+ tPas,27,120,205,12,0,0,190,239,239,"",22,120,225);
