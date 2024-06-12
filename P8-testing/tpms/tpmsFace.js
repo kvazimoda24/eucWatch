@@ -37,7 +37,7 @@ face[0] = {
           "alrm":0,
           "time":getTime()|0,
         }];
-        require("Storage").writeJSON("tpmsLog"+dev.id+".json",log);
+        require("Storage").writeJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",log);
       }
       this.sc();
       //scale
