@@ -145,7 +145,8 @@ euc.temp.city = function() {
 };
 euc.temp.inpk = function(event) {
 	// "ram";
-	let inpk = JSON.parse(E.toJS(event.target.value.buffer));
+	//let inpk = JSON.parse(E.toJS(event.target.value.buffer));
+	let inpk = event.target.value.buffer;
 	if (ew.is.bt == 5) {
 		NRF.updateServices({ 0xffe0: { 0xffe1: { value: inpk, notify: true } } });
 		//if (ew.dbg&&ew.log) {
