@@ -22,7 +22,23 @@ face[0] = {
       this.g.setColor(0,0);
       this.g.clearRect(0,186,239,195);
       this.g.flip();
-      this.log=require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1);
+      //this.log=require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1);
+      if (require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1))
+        this.log=require("Storage").readJSON("tpmsLog"+this.tpms[tpms.def.pos]+".json",1);
+      else {
+        this.log=[{
+          "id":this.tpms[tpms.def.pos],
+          "pos":0,
+          "kpa":0,
+          "bar":0,
+          "psi":0,
+          "temp":0,
+          "batt":0,
+          "alrm":0,
+          "time":getTime()|0,
+        }];
+        require("Storage").writeJSON("tpmsLog"+dev.id+".json",log);
+      }
       this.sc();
       //scale
       let tm=(getTime()|0) - this.log[tpms.def.ref].time;
