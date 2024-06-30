@@ -4,7 +4,7 @@
 E.setFlags({ pretokenise: 1 });
 Modules.addCached("eucWatch",function(){
 
-if(typeof SPIMeDMA === "undefined") {
+if(typeof SPIMeDMA == "undefined") {
   //screen driver
   // compiled with options LCD_BPP=16,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
   var SPI2 = (function(){
@@ -26,7 +26,6 @@ if(typeof SPIMeDMA === "undefined") {
   //
 } else var SPI2 = SPIMeDMA;
 
-//CS=D25;DC=D18;RST=D26;BL=D14;
 SCK=D2;MOSI=D3;
 ew.pin.disp.RST.reset();
 // CLK,MOSI,CS,DC
@@ -65,7 +64,7 @@ function cmds(arr){
   return c;
 }
 
-RST.set();
+ew.pin.disp.RST.set();
 
 function init(){
 	cmd(0x11); // sleep out
