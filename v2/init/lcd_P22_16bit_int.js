@@ -21,7 +21,7 @@ Modules.addCached("eucWatch",function(){
 
 //screen driver
 // compiled with options LCD_BPP=12,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
-var SPI2 = (function(){
+/*var SPI2 = (function(){
   var bin=(E.toFlatString||E.toString)(atob("AAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////8QtQNMfEQigGCAoYDjgBC92P///whLe0QbiUuxBUoTaAAr/NADSgAjE2AESnpEE4FwRwC/GDECQMb///+w////LenwR5BGGkwaTf/34/8aSt/4aMAAIxNgT/D/DlNgT/ABCSNgEDImRh9G/ykA6wMKwvgAoIu//zMpYMX4AOAAIYi//znM+ACQuPEADwXQIbkLS3tEASIagQfg1PgAoLrxAA/60DdgACnf0QAgvejwhxgxAkBINQJANDUCQBAwAkBK////LenwT5NGVUqbsHpEAZGS+ACQBkYAKADwlYAAKQDwkoAJ8f8zBysA8o2AASMD+gnzATvbskR4ApMDeEVJl4gA8QIKREhD6gQkICMDYAcjC2DTaASQRPoL9KSyBZELsT5KE2A/S0/wAAh7REFGEagDkweTA5tbiACTT+pJA11GBpMCmwGaI0BE+gn0MvgT4AKbI0BE+gn0MvgTIAabHUTtsgctAdiksgvgCD2a+AAw7bLF8QgMA/oM8xxDpLIK8QEKT+ouE0NUExJD6g4eQxgB8QIMg/gB4ACbAPgMIAMxAjubsiMpAJMJ3QEi//dH/9jxAQgHv0FGEagAIQioAJsAK77RB5vbiB5EAT90eDN4Q+oEJET6C/S/sgbxAgqksgAvp9EZsTpG//cp/wHg//cQ/wxLe0TbaAuxBJoTYAWbACAYYAHgT/D/MBuwvejwjwC/ADUCQAgFAFAMBQBQDv///7D+///m/f//GUp6RPi1BkYQaQ9GGLMTTBNJICMjYAcjC2ASSxhg0mgNRgKxGmAAIgEhMEb/9/L+Dkt7RAEvG2kjYATdACJ5HnAc//fn/gpLe0TbaAOxI2AAIChg+L1P8P8w+L0IBQBQADUCQAwFAFCu/f//fv3//2j9//8TtQAoHdsAKaa/jfgFEAIkASQAKqS/AqkJGY34BACkvwE0AfgELAAror8CqhIZATQhRgGoqL8C+AQ8//en/yBGAOAAIAKwEL1wtQVGcLFGGAAkKXhoHFGxRRiuQgHSYEJwvf/3k/8QuQE08udwvSBGcL0AAA1LG2gQtaO5DEsbaAuxDEoTYA5LC0p7RAAGXGkUYJxpVGDaaQhLSQAaYFhhWWQBIBC9T/D/MBC9ADUCQAQzAkAIMwJACDUCQBA1AkCy/P//BUoAIxNgovV+chNgA0sbaAuxwvgAMnBHADUCQAQzAkAQtQZMfEShYQEhAfoC8gH6A/NgYeJgI2EQvQC/VPz//w=="));
   return {
     cmd:E.nativeCall(589, "int(int,int)", bin),
@@ -34,11 +34,12 @@ var SPI2 = (function(){
     blt_pal:E.nativeCall(229, "int(int,int,int)", bin),
   };
 })();
-
+*/
 // this method would produce code string that can replace bin declaration above with heatshrink compressed variant
 // however it seems the gain is very small so is not worth it
 //    shrink:function(){return `var bin=E.toString(require("heatshrink").decompress(atob("${btoa(require("heatshrink").compress(bin))}")))`;}
 //
+var SPI2=SPIMeDMA;
 CS=D25;DC=D18;RST=D26;BL=D14;
 SCK=D2;MOSI=D3;
 RST.reset();
