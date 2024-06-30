@@ -39,9 +39,9 @@ function delayms(ms){
 }
 
 function toFlatString(arr){
-  var b=E.toString(arr);if (b) return b;
-  print("toFlatString() fail&retry!");E.defrag();b=E.toString(arr);if (b) return b;
-  print("fail&retry again!");E.defrag();b=E.toString(arr);if (b) return b;
+  var b=(E.toFlatString||E.toString)(arr);if (b) return b;
+  print("toFlatString() fail&retry!");E.defrag();b=(E.toFlatString||E.toString)(arr);if (b) return b;
+  print("fail&retry again!");E.defrag();b=(E.toFlatString||E.toString)(arr);if (b) return b;
   print("failed!"); return b;
 }
 function toFlatBuffer(a){return E.toArrayBuffer(toFlatString(a));}
