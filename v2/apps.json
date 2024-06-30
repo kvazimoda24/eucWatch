@@ -70,17 +70,17 @@
 
 		]
 	},
-	{ "id": "init12",
-	"name": "Init - P22 B1-D 12bit display",
+	{ "id": "initIntDFunc",
+	"name": "Init - P22 B1-D 16bit display Int",
 	"icon": "../init/icon.png",
 	"version":"1.94.6",
-	"description": "Screen driver and init functions. For use with the Espruino image  build by fanoush. ",
+	"description": "Screen driver and init functions. For use with the Espruino image  build by kvazimoda. ",
 	"tags": "core",
 	"needsFeatures":["P22B"],
 	"readme": "README.md",
 	"storage": [
 		{"name":".bootrst","url":"../init/init.js"},
-		{"name":".display","url":"../init/lcd_P22_12bit_rev.js"}
+		{"name":".display","url":"../init/lcd_P22_16bit_int.js"}
 
 	]
     },
