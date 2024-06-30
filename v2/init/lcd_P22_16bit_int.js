@@ -90,8 +90,8 @@ function init(){
 	// These 2 rotate the screen by 180 degrees
 	//[0x36,0xC0],     // MADCTL
 	//[0x37,0,80],   // VSCSAD (37h): Vertical Scroll Start Address of RAM
-	//cmd([0x3A, 0x55]);  // COLMOD - interface pixel format - 03 - 12bpp, 05 - 16bpp
-  cmd([0x3A, 0x03]);  // COLMOD - interface pixel format - 03 - 12bpp, 05 - 16bpp
+	cmd([0x3A, 0x55]);  // COLMOD - interface pixel format - 03 - 12bpp, 05 - 16bpp
+  //cmd([0x3A, 0x03]);  // COLMOD - interface pixel format - 03 - 12bpp, 05 - 16bpp
 	cmd([0xB2, 0xC, 0xC, 0, 0x33, 0x33]); // PORCTRL (B2h): Porch Setting
 	cmd([0xB7, 0]);     // GCTRL (B7h): Gate Control
 	cmd([0xBB, 0x3E]);  // VCOMS (BBh): VCOM Setting 
