@@ -80,7 +80,8 @@
 	"readme": "README.md",
 	"storage": [
 		{"name":".bootrst","url":"../init/init.js"},
-		{"name":".display","url":"../init/lcd_P22_16bit_int.js"}
+		{"name":".display","url":"../init/lcd_P22_16bit_int.js"},
+		{"name":"spi2_16bit.bin","url":"../init/spi2_16bit.bin"}
 
 	]
     },

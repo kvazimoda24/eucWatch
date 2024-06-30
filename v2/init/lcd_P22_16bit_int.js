@@ -3,54 +3,40 @@
 // p22 B1-D
 E.setFlags({ pretokenise: 1 });
 Modules.addCached("eucWatch",function(){
-//screen driver
-// compiled with options LCD_BPP=16,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
-/*var SPI2 = (function(){
-  var bin=atob("AAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////8QtQNMfEQigGCAoYDjgBC92P///wdLe0QbiUOxBEoTaAAr/NAAIxNgA0p6RBOBcEcYMQJAxv///7L///8t6fBHkEYZTBlO//fl/xlK3/hkwAAjASUTYE/w/w5TYKlGI2AQMh9G/ykA6wMKwvgAoIu//zMxYMb4AOAAIYi//znM+ACQuPEADwbQKbkLS3tEHYEAIL3o8IfU+ACguvEAD/rQJ2AAKd7R8+cYMQJASDUCQDQ1AkAQMAJAUP///y3p8E+bsBNGAJFOSXlEBkaR+ACwACgA8IyAAJoAKgDwiIAL8f8yByoA8oOAASIC+gvyATrSsgR4AZJCeD5NsfgEgETqAiSHHCAiPEgqYAciAmDKaBxBpLLN6QNQCrE4SQpgOUp6RBGoApIIqs3pBSBP8AAJSUYCmrL4AqAdRgGaXUTtsgctAuoEDACaiL8IPTL4HMCBvxf4ASvtssXxCA4C+g7yRPoL9E/qLC6IvxRDAPgB4EocAjEK8f86IymksgD4AsAf+or6C90BIgeT//dX/9nxAQkHmwu/BpgFmElGACG68QAPytEYSnpECPH/ONKIFkQf+oj4cng0eETqAiQcQbccpLK48QAPtNFxsUJG//c2/w5Le0TbaAuxA5oTYASbACAYYBuwvejwj//3FP/w50/w/zD25wgFAFAANQJADAUAUBT///+8/v//Nv7//wr+//8ZSnpE+LUGRhBpD0YQsxNME00gIyNgByMrYBJLGGDSaAKxGmAAIgEhMEb/9//+D0t7RAEvG2kjYATdACJ5HnAc//f0/gpLe0TbaAOxI2AAIChg+L1P8P8w++cAvwgFAFAANQJADAUAUMr9//+c/f//hv3//xO1ACge2wAppr+N+AUQAiQBJAAqpL8CqQkZjfgEAKS/ATQB+AQsACuivwKqEhkBNCFGAaiovwL4BDz/96f/IEYCsBC9ACT653C1BUaIsUYYACQoRhD4ARsZsUUYtUIC2WRCIEZwvf/3kf8AKPnRATTv5wRG9ecAAA1LG2gQtaO5DEsbaAuxDEoTYA5LC0p7RAAGXGkUYJxpVGDaaQhLSQAaYFhhWWQBIBC9T/D/MPvnADUCQAQzAkAIMwJACDUCQBA1AkDK/P//BUoAIxNgovV+chNgA0sbaAuxwvgAMnBHADUCQAQzAkAQtQZMfETE6QUBASEB+gLyAfoD8+JgI2EQvQC/bPz//w==");
-  return {
-    cmd:E.nativeCall(561, "int(int,int)", bin),
-    cmds:E.nativeCall(749, "int(int,int)", bin),
-    cmd4:E.nativeCall(677, "int(int,int,int,int)", bin),
-    setpins:E.nativeCall(909, "void(int,int,int,int)", bin),
-    enable:E.nativeCall(797, "int(int,int)", bin),
-    disable:E.nativeCall(877, "void()", bin),
-    blit_setup:E.nativeCall(33, "void(int,int,int,int)", bin),
-    blt_pal:E.nativeCall(221, "int(int,int,int)", bin),
-  };
-})();*/
 
-//screen driver
-// compiled with options LCD_BPP=12,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
-/*var SPI2 = (function(){
-  var bin=(E.toFlatString||E.toString)(atob("AAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////8QtQNMfEQigGCAoYDjgBC92P///whLe0QbiUuxBUoTaAAr/NADSgAjE2AESnpEE4FwRwC/GDECQMb///+w////LenwR5BGGkwaTf/34/8aSt/4aMAAIxNgT/D/DlNgT/ABCSNgEDImRh9G/ykA6wMKwvgAoIu//zMpYMX4AOAAIYi//znM+ACQuPEADwXQIbkLS3tEASIagQfg1PgAoLrxAA/60DdgACnf0QAgvejwhxgxAkBINQJANDUCQBAwAkBK////LenwT5NGVUqbsHpEAZGS+ACQBkYAKADwlYAAKQDwkoAJ8f8zBysA8o2AASMD+gnzATvbskR4ApMDeEVJl4gA8QIKREhD6gQkICMDYAcjC2DTaASQRPoL9KSyBZELsT5KE2A/S0/wAAh7REFGEagDkweTA5tbiACTT+pJA11GBpMCmwGaI0BE+gn0MvgT4AKbI0BE+gn0MvgTIAabHUTtsgctAdiksgvgCD2a+AAw7bLF8QgMA/oM8xxDpLIK8QEKT+ouE0NUExJD6g4eQxgB8QIMg/gB4ACbAPgMIAMxAjubsiMpAJMJ3QEi//dH/9jxAQgHv0FGEagAIQioAJsAK77RB5vbiB5EAT90eDN4Q+oEJET6C/S/sgbxAgqksgAvp9EZsTpG//cp/wHg//cQ/wxLe0TbaAuxBJoTYAWbACAYYAHgT/D/MBuwvejwjwC/ADUCQAgFAFAMBQBQDv///7D+///m/f//GUp6RPi1BkYQaQ9GGLMTTBNJICMjYAcjC2ASSxhg0mgNRgKxGmAAIgEhMEb/9/L+Dkt7RAEvG2kjYATdACJ5HnAc//fn/gpLe0TbaAOxI2AAIChg+L1P8P8w+L0IBQBQADUCQAwFAFCu/f//fv3//2j9//8TtQAoHdsAKaa/jfgFEAIkASQAKqS/AqkJGY34BACkvwE0AfgELAAror8CqhIZATQhRgGoqL8C+AQ8//en/yBGAOAAIAKwEL1wtQVGcLFGGAAkKXhoHFGxRRiuQgHSYEJwvf/3k/8QuQE08udwvSBGcL0AAA1LG2gQtaO5DEsbaAuxDEoTYA5LC0p7RAAGXGkUYJxpVGDaaQhLSQAaYFhhWWQBIBC9T/D/MBC9ADUCQAQzAkAIMwJACDUCQBA1AkCy/P//BUoAIxNgovV+chNgA0sbaAuxwvgAMnBHADUCQAQzAkAQtQZMfEShYQEhAfoC8gH6A/NgYeJgI2EQvQC/VPz//w=="));
-  return {
-    cmd:E.nativeCall(589, "int(int,int)", bin),
-    cmds:E.nativeCall(777, "int(int,int)", bin),
-    cmd4:E.nativeCall(705, "int(int,int,int,int)", bin),
-    setpins:E.nativeCall(933, "void(int,int,int,int)", bin),
-    enable:E.nativeCall(821, "int(int,int)", bin),
-    disable:E.nativeCall(901, "void()", bin),
-    blit_setup:E.nativeCall(33, "void(int,int,int,int)", bin),
-    blt_pal:E.nativeCall(229, "int(int,int,int)", bin),
-  };
-})();
-*/
-// this method would produce code string that can replace bin declaration above with heatshrink compressed variant
-// however it seems the gain is very small so is not worth it
-//    shrink:function(){return `var bin=E.toString(require("heatshrink").decompress(atob("${btoa(require("heatshrink").compress(bin))}")))`;}
-//
-var SPI2=SPIMeDMA;
-CS=D25;DC=D18;RST=D26;BL=D14;
+if(typeof SPIMeDMA === "undefined") {
+  //screen driver
+  // compiled with options LCD_BPP=16,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
+  var SPI2 = (function(){
+    var bin=(E.toFlatString||E.toString)(require("Storage").read("spi2_16bit.bin"));
+    return {
+      cmd:E.nativeCall(561, "int(int,int)", bin),
+      cmds:E.nativeCall(749, "int(int,int)", bin),
+      cmd4:E.nativeCall(677, "int(int,int,int,int)", bin),
+      setpins:E.nativeCall(909, "void(int,int,int,int)", bin),
+      enable:E.nativeCall(797, "int(int,int)", bin),
+      disable:E.nativeCall(877, "void()", bin),
+      blit_setup:E.nativeCall(33, "void(int,int,int,int)", bin),
+      blt_pal:E.nativeCall(221, "int(int,int,int)", bin),
+    };
+  })();
+  // this method would produce code string that can replace bin declaration above with heatshrink compressed variant
+  // however it seems the gain is very small so is not worth it
+  //    shrink:function(){return `var bin=E.toString(require("heatshrink").decompress(atob("${btoa(require("heatshrink").compress(bin))}")))`;}
+  //
+} else var SPI2 = SPIMeDMA;
+
+//CS=D25;DC=D18;RST=D26;BL=D14;
 SCK=D2;MOSI=D3;
-RST.reset();
+ew.pin.disp.RST.reset();
 // CLK,MOSI,CS,DC
-D2.write(0);D3.write(0);CS.write(1);DC.write(1);
-SPI2.setpins(SCK,MOSI,CS,DC);
+SCK.write(0);MOSI.write(0);ew.pin.disp.CS.write(1);ew.pin.disp.DC.write(1);
+SPI2.setpins(SCK,MOSI,ew.pin.disp.CS,ew.pin.disp.DC);
 SPI2.enable(0x80,0); //8MBit, mode 0
 
 function delayms(ms){
-  digitalPulse(DC,0,ms); // just to wait 10ms
-  digitalPulse(DC,0,0);
+  digitalPulse(ew.pin.disp.DC,0,ms); // just to wait 10ms
+  digitalPulse(ew.pin.disp.DC,0,0);
 }
 
 function toFlatString(arr){
@@ -216,9 +202,9 @@ g.off=function(){
 
 //battery
 const batt=function(i,c){
-	let v= 7.1*analogRead(D31);
+	let v= 7.1*analogRead(ew.pin.BAT);
 	let l=3.5,h=4.19;
-    let hexString = ("0x"+(0x50000700+(D31*4)).toString(16));
+    let hexString = ("0x"+(0x50000700+(ew.pin.BAT*4)).toString(16));
 	poke32(hexString,2); // disconnect pin for power saving, otherwise it draws 70uA more 	
 	if (i==="info"){
 		if (c) return ((100*(v-l)/(h-l)|0)+'%-'+v.toFixed(2)+'V'); 
