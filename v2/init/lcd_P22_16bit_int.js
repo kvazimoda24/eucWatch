@@ -97,7 +97,7 @@ function init(){
 //var bpp=(require("Storage").read("ew.json") && require("Storage").readJSON("ew.json").bpp)?require("Storage").readJSON("ew.json").bpp:1;
 var bpp=1;
 var g=Graphics.createArrayBuffer(240,240,bpp);
-g.sr=setRotation
+g.sr=g.setRotation;
 g.setRotation=function(rotate,reflect){
   let MADCTL;
   switch(rotate){
