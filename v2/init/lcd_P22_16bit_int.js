@@ -97,6 +97,29 @@ function init(){
 //var bpp=(require("Storage").read("ew.json") && require("Storage").readJSON("ew.json").bpp)?require("Storage").readJSON("ew.json").bpp:1;
 var bpp=1;
 var g=Graphics.createArrayBuffer(240,240,bpp);
+g.sr=setRotation
+g.setRotation=function(rotate,reflect){
+  let MADCTL;
+  switch(rotate){
+    case 0:
+      MADCTL=0x48;
+      break;
+    case 1:
+      MADCTL=0x28;
+      break;
+    case 2:
+      MADCTL=0x88;
+      break;
+    case 3:
+      MADCTL=0xE8;
+      break;
+    default: return 1;
+  }
+  if(reflect) MADCTL ^= 1<<6;
+  cmd([0x36,MADCTL]);
+  cmd([0x37,0,(rotate<2)?0:80]);
+  return 0;
+}
 g.setRotation(scr.rotate, scr.mirror);
 var pal;
 g.sc=g.setColor;
