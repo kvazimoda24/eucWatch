@@ -70,8 +70,8 @@ function init(){
 	cmd(0x11); // sleep out
 	delayms(20);
 //	cmd([0x36, 0]);     // MADCTL - This is an unrotated screen
-	cmd([0x36, 0x48]); 	
-	cmd([0x37,0,0]);
+//	cmd([0x36, 0x48]); 	
+//	cmd([0x37,0,0]);
 	// These 2 rotate the screen by 180 degrees
 	//[0x36,0xC0],     // MADCTL
 	//[0x37,0,80],   // VSCSAD (37h): Vertical Scroll Start Address of RAM
@@ -120,7 +120,7 @@ g.setRotation=function(rotate,reflect){
   cmd([0x37,0,(MADCTL&0x80)?80:0]);
   return 0;
 }
-g.setRotation(scr.rotate, scr.mirror);
+
 var pal;
 g.sc=g.setColor;
 // 16bit RGB565  //0=black,1=dgray,2=gray,3=lgray,4=raf,5=raf1,6=raf2,7=red,8=blue,9=purple,10=?,11=green,12=olive,13=yellow,14=lblue,15=white
@@ -200,6 +200,7 @@ g.bri={
 
 g.isOn=false;
 init();
+g.setRotation(scr.rotate, scr.mirror);
 
 g.on=function(){
   if (this.isOn) return;
