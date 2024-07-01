@@ -101,21 +101,21 @@ g.sr=g.setRotation;
 g.setRotation=function(rotate,reflect){
   let MADCTL;
   switch(rotate){
-    case 0:
+    case 0: // 0
       MADCTL=0x48;
       break;
-    case 1:
+    case 1: // 90
       MADCTL=0x28;
       break;
-    case 2:
+    case 2: // 180
       MADCTL=0x88;
       break;
-    case 3:
+    case 3: // 270
       MADCTL=0xE8;
       break;
     default: return 1;
   }
-  if(reflect) MADCTL ^= 1<<6;
+  if(reflect) MADCTL ^= 1<<((MADCTL&(1<<5))?7:6);
   cmd([0x36,MADCTL]);
   cmd([0x37,0,(rotate<2)?0:80]);
   return 0;
