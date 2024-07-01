@@ -115,9 +115,9 @@ g.setRotation=function(rotate,reflect){
       break;
     default: return 1;
   }
-  if(reflect) MADCTL ^= 1<<((MADCTL&(1<<5))?7:6);
+  if(reflect) MADCTL ^= 1<<((MADCTL&0x20)?7:6);
   cmd([0x36,MADCTL]);
-  cmd([0x37,0,(rotate<2)?0:80]);
+  cmd([0x37,0,(MADCTL&0x80)?80:0]);
   return 0;
 }
 g.setRotation(scr.rotate, scr.mirror);
