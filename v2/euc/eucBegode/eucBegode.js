@@ -136,7 +136,7 @@ euc.temp.extd= function(event) {
 };
 euc.temp.main=function(event){
 	if (ew.is.bt==5) 	euc.proxy.w(event.target.value.buffer);
-	if (euc.dbg)  console.log("input",event.target.value.buffer);
+	if (euc.dbg)  console.log(Date.now(),"input",event.target.value.buffer);
 	//gather packet
 	let part=JSON.parse(JSON.stringify(event.target.value.buffer));
 	let startP = part.findIndex((el, idx, arr) => {return arr[idx] == 85 && arr[idx + 1] == 170;});
