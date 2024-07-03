@@ -30,6 +30,8 @@ if (process.env.BOARD == "P8" ||process.env.BOARD == "P22"||process.env.BOARD ==
     else if (ew.def.touchtype == "716") eval(require('Storage').read("handler_touch_716"));
 } else eval(require('Storage').read('handler_touch'));
 
+if(typeof S816.setRotate == "function") S816.setRotate(scr.rotate, scr.mirror);
+
 // Disabling hearth rate sensor
 i2c.writeTo(0x44,0x01);
 let hrs = i2c.readFrom(0x44,1)[0];

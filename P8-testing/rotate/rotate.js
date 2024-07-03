@@ -54,12 +54,14 @@ face[0] = {
     if (scr.rotate==3) scr.rotate=0;
     else scr.rotate++;
     w.gfx.setRotation(scr.rotate, scr.mirror); face[0].init();
+    if(typeof S816.setRotate == "function") S816.setRotate(scr.rotate, scr.mirror);
     let t = acc.mode; acc.off(); acc.on(t);
   },
   mirror: function(){
     if (scr.mirror==true) scr.mirror=false;
     else scr.mirror=true;
     w.gfx.setRotation(scr.rotate, scr.mirror); face[0].init();
+    if(typeof S816.setRotate == "function") S816.setRotate(scr.rotate, scr.mirror);
   },
   off: function(o){
     this.g.off();
