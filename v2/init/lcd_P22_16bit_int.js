@@ -4,27 +4,7 @@
 E.setFlags({ pretokenise: 1 });
 Modules.addCached("eucWatch",function(){
 
-if(typeof SPIMeDMA == "undefined") {
-  //screen driver
-  // compiled with options LCD_BPP=16,SHARED_SPIFLASH,SPIFLASH_CS=(1<<5)
-  var SPI2 = (function(){
-    var bin=(E.toFlatString||E.toString)(require("Storage").read("spi2_16bit.bin"));
-    return {
-      cmd:E.nativeCall(561, "int(int,int)", bin),
-      cmds:E.nativeCall(749, "int(int,int)", bin),
-      cmd4:E.nativeCall(677, "int(int,int,int,int)", bin),
-      setpins:E.nativeCall(909, "void(int,int,int,int)", bin),
-      enable:E.nativeCall(797, "int(int,int)", bin),
-      disable:E.nativeCall(877, "void()", bin),
-      blit_setup:E.nativeCall(33, "void(int,int,int,int)", bin),
-      blt_pal:E.nativeCall(221, "int(int,int,int)", bin),
-    };
-  })();
-  // this method would produce code string that can replace bin declaration above with heatshrink compressed variant
-  // however it seems the gain is very small so is not worth it
-  //    shrink:function(){return `var bin=E.toString(require("heatshrink").decompress(atob("${btoa(require("heatshrink").compress(bin))}")))`;}
-  //
-} else var SPI2 = SPIMeDMA;
+var SPI2 = SPIMeDMA;
 
 SCK=D2;MOSI=D3;
 ew.pin.disp.RST.reset();
