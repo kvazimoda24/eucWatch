@@ -98,28 +98,7 @@ function init(){
 var bpp=1;
 var g=Graphics.createArrayBuffer(240,240,bpp);
 g.sr=g.setRotation;
-g.setRotation=function(rotate,reflect){
-  let MADCTL;
-  switch(rotate){
-    case 0: // 0
-      MADCTL=0x48;
-      break;
-    case 1: // 90
-      MADCTL=0x28;
-      break;
-    case 2: // 180
-      MADCTL=0x88;
-      break;
-    case 3: // 270
-      MADCTL=0xE8;
-      break;
-    default: return 1;
-  }
-  if(reflect) MADCTL ^= 1<<((MADCTL&0x20)?7:6);
-  cmd([0x36,MADCTL]);
-  cmd([0x37,0,(MADCTL&0x80)?80:0]);
-  return 0;
-}
+g.setRotation=SPI2.rotate;
 
 var pal;
 g.sc=g.setColor;
