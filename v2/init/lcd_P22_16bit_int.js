@@ -148,14 +148,7 @@ switch(bpp){
     break;
 }
 
-// preallocate setwindow command buffer for flip
-g.winCmd=toFlatBuffer([
-  5, 0x2a, 0,0, 0,0,
-  5, 0x2b, 0,0, 0,0,
-  1, 0x2c,
-  0 ]);
 // precompute addresses for flip
-g.winA=E.getAddressOf(g.winCmd,true);
 g.palA=E.getAddressOf(pal.buffer,true); // pallete address
 g.buffA=E.getAddressOf(g.buffer,true); // framebuffer address
 g.stride=g.getWidth()*bpp/8;
@@ -165,24 +158,15 @@ g.flip=function(force){
   if (force)
     r={x1:0,y1:0,x2:this.getWidth()-1,y2:this.getHeight()-1};
   if (r === undefined) return;
-  var x1=r.x1&0xfe;var x2=(r.x2+2)&0xfe; // for 12bit mode align to 2 pixels
-  var xw=(x2-x1);
+  var xw=(r.x2-r.x1+1);
   var yw=(r.y2-r.y1+1);
   if (xw<1||yw<1) {print("empty rect ",xw,yw);return;}
-/*
-  cmd([0x2a,0,x1,0,x2-1]);
-  cmd([0x2b,0,r.y1,0,r.y2]);
-  cmd([0x2c]);
-*/
-  var c=g.winCmd;
-  c[3]=x1;c[5]=x2-1; //0x2a params
-  c[9]=r.y1;c[11]=r.y2; // 0x2b params
   SPI2.blit_setup(xw,yw,bpp,g.stride);
-  var xbits=x1*bpp;
+  var xbits=r.x1*bpp;
   var bitoff=xbits%8;
   var addr=g.buffA+(xbits-bitoff)/8+r.y1*g.stride; // address of upper left corner
   //VIB.set();//debug
-  SPI2.cmds(g.winA,c.length);
+  SPI2.setwin(g.winA,c.length);
   SPI2.blt_pal(addr,g.palA,bitoff);
   //VIB.reset();//debug
 };
