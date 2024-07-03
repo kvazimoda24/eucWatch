@@ -166,7 +166,7 @@ g.flip=function(force){
   var bitoff=xbits%8;
   var addr=g.buffA+(xbits-bitoff)/8+r.y1*g.stride; // address of upper left corner
   //VIB.set();//debug
-  SPI2.setwin(g.winA,c.length);
+  SPI2.setwin(r.x1,r.x2,r.y1,r.y2);
   SPI2.blt_pal(addr,g.palA,bitoff);
   //VIB.reset();//debug
 };
