@@ -1,12 +1,13 @@
 //Begode euc module - based on code from Freetyl3r's euc dash.
 E.setFlags({ pretokenise: 1 });
 euc.cmd=function(cmd, param) {
+  if (euc.dbg) console.log("euc.cmd(", cmd, ",", param, ")");
   if (cmd=='extendedPacket') {
-	  euc.temp.ext=1;
+	euc.temp.ext=1;
 	setTimeout(()=>{euc.temp.read.replaceWith(euc.temp.extd);},500);
-  }else if (euc.temp.ext){
+  } else if (euc.temp.ext) {
   	euc.temp.ext=0;
-	  euc.temp.read.replaceWith(euc.temp.main);
+	euc.temp.read.replaceWith(euc.temp.main);
   }
   switch(cmd) {
     case 'mainPacket':      return [44];
@@ -257,29 +258,31 @@ euc.temp.pck4=function(data) {
 
 euc.temp.init=function(c) {
 	let hlc=[0,"lightsOn","lightsOff","lightsStrobe"];
-	c.writeValue(euc.cmd(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none")).then(function() {
-		return c.writeValue(euc.cmd(euc.dash.auto.onC.beep?"beep":"none"));
+	new Promise(function() {
+		return euc.wri(euc.dash.auto.onC.HL?hlc[euc.dash.auto.onC.HL]:"none");
 	}).then(function() {
-		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none");
+		return euc.wri(euc.dash.auto.onC.beep?"beep":"none");
 	}).then(function() {
-		if (!euc.dash.info.get.modl){
+		return euc.wri(euc.dash.auto.onC.led?("ledMode",euc.dash.auto.onC.led-1):"none")
+	}).then(function() {
+		if (!euc.dash.info.get.modl) {
 			console.log("model not found,fetch");
-			return c.writeValue(euc.cmd("fetchModel"));
+			return euc.wri("fetchModel");
 		}
 	}).then(function() {
-		if (!euc.dash.info.get.firm)
-			return c.writeValue(euc.cmd("fetchFirmware"));
+		if (!euc.dash.info.get.firm) return euc.wri("fetchFirmware");
 	}).then(function() {
 		euc.is.run=1;
 		return c.startNotifications();
 	}).catch(euc.off);
-
 };
 euc.temp.exit=function(c) {
 	if (euc.gatt && euc.gatt.connected) {
 		let hld=["none","lightsOn","lightsOff","lightsStrobe"];
-		c.writeValue(euc.cmd(hld[euc.dash.auto.onD.HL])).then(function() {
-			return c.writeValue(euc.cmd(euc.dash.auto.onD.beep?"beep":"none"));
+		new Promise(function() {
+			return euc.wri(hld[euc.dash.auto.onD.HL]);
+		}).then(function() {
+			return euc.wri(euc.dash.auto.onD.beep?"beep":"none");
 		}).then(function() {
 			return euc.wri(euc.dash.auto.onD.led?("ledMode",euc.dash.auto.onD.led-1):"none");
 		}).then(function() {
@@ -288,8 +291,8 @@ euc.temp.exit=function(c) {
 		}).then(function() {
 			euc.gatt.disconnect();
 		}).catch(euc.off);
-	}else {
-		if (euc.tout.busy) {clearTimeout(euc.tout.busy);euc.tout.busy=0;}
+	} else {
+		if (euc.tout.busy) {euc.tout.busy=0;}
 		euc.state="OFF";
 		euc.off("not connected");
 		return;
@@ -331,8 +334,17 @@ euc.conn=function(mac){
 	}).then(function(c) {
 		console.log("EUC Begode connected!");
 		euc.wri= function(n,v) {
-			if (euc.tout.busy) { clearTimeout(euc.tout.busy);euc.tout.busy=setTimeout(()=>{euc.tout.busy=0;},150);return;}
-			euc.tout.busy=setTimeout(()=>{euc.tout.busy=0;},100);
+			//if (euc.tout.busy) { clearTimeout(euc.tout.busy);euc.tout.busy=setTimeout(()=>{euc.tout.busy=0;},150);return;}
+			//euc.tout.busy=setTimeout(()=>{euc.tout.busy=0;},100);
+			if (euc.tout.eucWrite) {
+				clearTimeout(euc.tout.eucWrite);
+				euc.tout.eucWrite=0;
+			}
+			if (euc.tout.busy) {
+				if (cmd!=="proxy") euc.tout.eucWrite=setTimeout(function() {euc.wri(n,v)},100);
+				return;
+			}
+			euc.tout.busy = 1;
 			//end
 			if (n==="proxy") {
 				c.writeValue(euc.proxy.buffer[0]).then(function() {
@@ -344,12 +356,19 @@ euc.conn=function(mac){
 				}).then(function() {
 					euc.proxy.buffer.shift();
 					if (euc.proxy.buffer[0]) return c.writeValue(euc.proxy.buffer[0])
+				}).then(function() {
+					return euc.tout.busy = 0;
 				}).catch(euc.off);
 			}else if (euc.state=="OFF"||n=="end") {
 				euc.temp.exit(c);
 			} else if (n==="start") {
-				if (euc.is.run) c.startNotifications();
-				else euc.temp.init(c);
+				if (euc.is.run) {
+					c.startNotifications();
+					euc.tout.busy = 0;
+				} else {
+					euc.tout.busy = 0;
+					euc.temp.init(c);
+				}
 				setTimeout(()=>{euc.state="READY";},500);
 			}else{
 				let cob=euc.cmd(n,v);
@@ -360,6 +379,8 @@ euc.conn=function(mac){
 					return cob[2]? c.writeValue(cob[2]):"ok";
 				}).then(function() {
 					return cob[3]? c.writeValue(cob[3]):"ok";
+				}).then(function() {
+					return euc.tout.busy = 0;
 				}).catch(euc.off);
 			}
 		};
