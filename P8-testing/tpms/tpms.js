@@ -91,11 +91,12 @@ tpms= {
             break;
         }
         //let parseFunc = new Function("device", "return tpms.type_" + service + "(device)");
-        devicesFilter = NRF.filterDevices(devices, [{services:[ service ]}] );
+        let devicesFilter = NRF.filterDevices(devices, [{services:[ service ]}] );
         devicesFilter.forEach(function(device) {
           if (ew.is.bt===2 && tpms.dbg == 1) console.log(device);
           if (device == [ ] || !device.id ) return;
           let dev = parseFunc(device);
+          let alrm=0;
           if (!dev) return;
           if (!tpms.def.allowNew && !tpms.def.list[dev.id]) return;
           if (!tpms.def.list[dev.id]) {
@@ -111,13 +112,13 @@ tpms= {
           if (dev.psi<tpms.def.list[dev.id].lowP) {
             alrm=1;
             if (euc.state=="READY") euc.dash.alrt.warn.txt="LOW PRESSURE";
-            handleInfoEvent({"src":"TPMS","title":id,"body":"LOW PRESSURE."+"  "+dev[tpms.def.metric]+" "+tpms.def.metric+"  "},1);
+            handleInfoEvent({"src":"TPMS","title":dev.id,"body":"LOW PRESSURE."+"  "+dev[tpms.def.metric]+" "+tpms.def.metric+"  "},1);
           } else if (tpms.def.list[dev.id].hiP <=dev.psi) {
             alrm=2;
             if (euc.state=="READY") euc.dash.alrt.warn.txt="HI PRESSURE";
             handleInfoEvent({"src":"TPMS","title":dev.id,"body":"HI PRESSURE."+"  "+dev[tpms.def.metric]+" "+tpms.def.metric+"  "},1);
           } else alrm=0;
-          if (euc.state!="OFF") tpms.euc[dev.id]={"time":dev.time,"alrm":dev.alrm,"psi":dev.psi};
+          if (euc.state!="OFF") tpms.euc[dev.id]={"time":dev.time,"alrm":alrm,"psi":dev.psi};
           let log=(require("Storage").readJSON("tpmsLog"+dev.id+".json",1))?require("Storage").readJSON("tpmsLog"+dev.id+".json",1):[];
           log.unshift(dev);
           if (10<log.length) log.pop();

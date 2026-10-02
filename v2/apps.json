@@ -481,7 +481,7 @@
 	{ "id": "tpms",
 		"name": "TPMS Sensor",
 		"icon": "../../P8-testing/tpms/icon.png",
-		"version":"1.95.13",
+		"version":"1.95.14",
 		"description": "BLE TPMS Sensors (Tire pressure measuring, TP630 etc)",
 		"tags": "euc",
 	    "needsFeatures":["V1"],
